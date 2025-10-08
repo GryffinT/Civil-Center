@@ -90,32 +90,10 @@ def landing_page():
     st.markdown("""
     <div class="top-bar">
         <span style="padding-top: 60px;">Civil<sub>center</sub></span>
-        <button id="login-btn" style="margin-left: 75%;">Login</button>
-        <button id="signup-btn">Sign Up</button>
     </div>
     <div style="height: 150px;"></div>
     """, unsafe_allow_html=True)
     
-    # === JavaScript bindings ===
-    components.html("""
-    <script>
-    const login = document.getElementById("login-btn");
-    const signup = document.getElementById("signup-btn");
-    
-    if (login) {
-        login.addEventListener("click", () => {
-            alert("Login button clicked!");
-        });
-    }
-    
-    if (signup) {
-        signup.addEventListener("click", () => {
-            alert("Login button clicked!");
-        });
-    }
-    </script>
-    """, height=0)
-    # Actually start putting content down here!!!
 
     col1, col2, col3 = st.columns([5,.5,5])
     with col3:
