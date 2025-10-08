@@ -12,6 +12,6 @@ def login_page():
             st.header("Login")
         with tab2:
             st.header("Signup")
-        st.form_submit_button()
+        submitted = st.form_submit_button()
     if submitted:
         st.session_state.page = 0
