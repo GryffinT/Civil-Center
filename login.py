@@ -10,13 +10,13 @@ def login_page():
         with tab1:
             login_username = ""
             st.header("Login")
-            login_username = st.text_input("Username")
-            st.text_input("Password")
+            login_username = st.text_input(key="lu", label="Username")
+            st.text_input(key="lp", label="Password")
         with tab2:
             signup_username = ""
             st.header("Signup")
-            signup_username = st.text_input("Username")
-            st.text_input("Password")
+            signup_username = st.text_input(key="su", label="Username")
+            st.text_input(key="sp", label="Password")
         if signup_username:
             string = signup_username
         else:
