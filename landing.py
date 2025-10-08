@@ -112,7 +112,7 @@ def landing_page():
                     ">
                         democracy
                     </span> 
-                    isn't a shouting match.
+                    <span>isn't a shouting match.</span>
                 </h1>
 
                <p style="font-size: 30px; color: #000;">Don't fall to the sidelines, <strong>your voice matters</strong>, so make it heard.</p>
