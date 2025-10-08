@@ -118,26 +118,8 @@ def landing_page():
                <p style="font-size: 30px; color: #000;">Don't fall to the sidelines, <strong>your voice matters</strong>, so make it heard.</p>
         </div>
                 """)
+        st.button(r"$\footnotesize\text{Leads}\\\Large12$")
 
-        # HTML for a big button
-        components.html("""
-            <button style="
-                padding: 20px 60px;
-                font-size: 24px;
-                background-color: #4462fc;
-                color: white;
-                border: none;
-                border-radius: 8px;
-                cursor: pointer;
-                width: 100%;
-            " onclick="document.title='clicked'">
-                Join the Civil Center community
-            </button>
-        """, height=100)
-        
-        # Detect the click by checking a session variable
-        if st.session_state.get("clicked", False):
-            st.write("Button clicked!")
 
     container = st.container()
     container.html("""
