@@ -17,7 +17,7 @@ def landing_page():
 
 
     # Background rectangles
-    def make_fullwidth_rectangle(height, color="#f0f2f6"):
+    def make_fullwidth_rectangle(height, color="#ffffff"):
         st.markdown(
             f"""
             <div style="
@@ -56,7 +56,7 @@ def landing_page():
         z-index: 9999;
 
         /* Frosted glass effect */
-        background: rgba(255, 255, 255, 0.5); 
+        background: rgba(220, 219, 218, 0.5); 
         backdrop-filter: blur(10px);           
         -webkit-backdrop-filter: blur(10px);  
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -84,6 +84,8 @@ def landing_page():
     st.html("""
     <div class="top-bar">
         <span style="padding-top: 60px; background: transparent;">Civil<sub>center</sub></span>
+        <button style="margin-left: 75%; margin-top: 60px; margin-right: 30px; padding: 10px 20px; font-size: 20px; background-color: #000; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="window.location.href='/login'";>Login</button>
+        <button style="margin-left: auto; margin-top: 60px; margin-right: 30px; padding: 10px 20px; font-size: 20px; background-color: #000; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="window.location.href='/signup'";>Sign Up</button>
     </div>
     """)
 
@@ -117,9 +119,11 @@ def landing_page():
 
     container = st.container()
     container.html("""
-    <div style="background-color: #f5f5f5; padding: 50px; border-radius: 15px; margin-top: 50px;">
+    <div style="background-color: #f5f5f5; padding: 50px; border-radius: 15px; margin-top: 50px;padding-bottom: 100px; margin-bottom: 50px;">
 
         <h2 style="font-size: 40px; color: #333; text-align: center;">Join the Conversation</h2>
+        <p style="text-align: center; font-size: 20px;">Wether you're a community leader or member, Civil Center is here to help you make a difference.</p>
+        <br>
         
         <style>
             .small-rect {
@@ -146,23 +150,83 @@ def landing_page():
             <!-- Left small rectangle -->
             <div class="small-rect" style="text-align: left;">
                 <img src="https://i.postimg.cc/ZRZqjs3q/seminar.gif" style="width:100px; height:100px;" />
-                <p style="color: #666;">Voice your ideas</p>
+                <h2 style="color: #666;">Voice your ideas</h2>
+                <p style="color: #666;">Put your ideas out there, share your thoughts through posts, if you're unsure about how they'll be received, post them anonymously!</p>
             </div>
 
             <!-- Middle small rectangle with 10px margin -->
-            <div class="small-rect middle-rect">
-                <p style="color: #666;">I rise in...</p>
+            <div class="small-rect middle-rect" style="text-align: left;">
+                <img src="https://i.postimg.cc/9Mt4yR83/thumbs-up-thumbs-down.gif" style="width:100px; height:100px;" />
+                <h2 style="color: #666;">Discuss</h2>
+                <p style="color: #666;">Engage in discussions around the ideas posted by others, providing your insights and perspectives. If you support a particular idea, let it be known by up-voting it!</p>
             </div>
 
             <!-- Right small rectangle -->
-            <div class="small-rect">
-                <h2 style="color: #666; text-align: left;">And the motion...</h2>
+            <div class="small-rect" style="text-align: left;">
+                <img src="https://i.postimg.cc/J48fTypq/contract.gif" style="width:100px; height:100px;" />
+                <h2 style="color: #666; text-align: left;">Make changes</h2>
+                <p style="color: #666; text-align: left;">The most active posts are highlighted for community leaders to see and engage with! Users can also make pledges to support specific changes they'd like to see.</p>
             </div>
 
         </div>
 
     </div>
     """)
+    
+    container.html("""
+            <h1 style="font-size: 60px;">How to join the Civil Center community</h1>
+            <ul>
+                <li style="font-size: 25px; margin-bottom: 10px;">Click the "Sign Up" button at the top right corner of the page.</li>
+                <li style="font-size: 25px; margin-bottom: 10px;">Fill out the registration form with your details.</li>
+                <li style="font-size: 25px; margin-bottom: 10px;">Verify your email address through the link sent to your inbox.</li>
+                <li style="font-size: 25px; margin-bottom: 10px;">Log in using your new credentials and start engaging with the community!</li>
+            """)
+    
+    container.html("""
+                   <div style="background-color: #f5f5f5; padding: -10px; border-radius: 15px; margin-top: 50px;padding-bottom: -10px; margin-bottom: 10px;">
+                    <style>
+                        .small-rect2 {
+                            flex: 1;
+                            padding: 20px;
+                            border-radius: 10px;
+                            text-align: center;
+                            transition: transform 0.3s ease, box-shadow 0.3s ease;
+                        }
+
+                        .middle-rect2 {
+                            margin: 0 10px;
+                        }
+                    </style>
+
+                    <!-- Inner row containing 3 small rectangles -->
+                    <div style="display: flex; margin-top: 30px;">
+
+                        <!-- Left small rectangle -->
+                        <div class="small-rect2" style="text-align: left;">
+                            <h2 style="color: #000; text-align: left;"><strong>Civil<sub>Center</sub></strong></h2>
+                            <p style="color: #666;">Share your thoughts with your communities<br> and garner change, because democracy is<br> not a shouting match.</p>
+                        </div>
+
+                        <!-- Middle small rectangle with 10px margin -->
+                        <div class="small-rect2 middle-rect2" style="text-align: left;">
+                            <p style="color: #000; font-size: 20px;">Product</p>
+                            <button style="color: #666; border: none; background: none; cursor: pointer;" onclick="window.location.href='/changelogs'">
+                                Changelogs
+                            </button>
+                        </div>
+
+                        <!-- Right small rectangle -->
+                        <div class="small-rect2" style="text-align: left;">
+                            <p style="color: #000; font-size: 20px; text-align: left;">About the team</p>
+                            <button style="color: #666; border: none; background: none; cursor: pointer;" onclick="window.location.href='/about'">
+                                Learn more
+                            </button>
+                            <button style="color: #666; border: none; background: none; cursor: pointer;" onclick="window.location.href='https://github.com/GryffinT/Civil-Center'">
+                                Github
+                            </button>
+                        </div>
+                   </div>
+                   """)
 
 
 
