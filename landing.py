@@ -18,29 +18,18 @@ def landing_page():
     st.set_page_config(page_title="Civil Center", page_icon=":guardsman:", layout="wide")
 
     # CSS to create frosted glass effect top bar
-    
-    # --- read query params and turn them into session state flags ---
-    params = st.get_query_params()
-    action = params.get("action", [None])[0]
-    
-    if action:
-        if action == "login":
-            st.session_state['auth_step'] = 1
-        elif action == "signup":
-            st.session_state['auth_step'] = 2
-        # clear query params so refresh doesn't re-trigger
-        st.set_query_params()
-        # rerun to pick up the new session_state immediately
-        st.rerun()
-    
-    # ensure default exists
-    if 'auth_step' not in st.session_state:
-        st.session_state['auth_step'] = 0
-    
-    # --- render top bar HTML (uses anchor links with target="_top") ---
+
+    # === Styles ===
     st.markdown("""
     <style>
-    body { margin: 0; font-family: sans-serif; }
+    .css-18e3th9 {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    body {
+        margin: 0;
+    }
     
     /* Full-width frosted top bar */
     .top-bar {
@@ -53,18 +42,24 @@ def landing_page():
         align-items: center;
         padding-left: 30px;
         z-index: 9999;
+    
         background: rgba(220, 219, 218, 0.5);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
+    
+    /* Text inside the bar */
     .top-bar span {
         font-size: 50px;
         font-weight: bold;
         color: black;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        background: transparent !important;
     }
-    .btn {
+    
+    /* Buttons */
+    .top-bar button {
         margin-top: 60px;
         margin-right: 30px;
         padding: 10px 20px;
@@ -73,29 +68,53 @@ def landing_page():
         color: white;
         border: none;
         border-radius: 5px;
-        text-decoration: none;
-        display: inline-block;
+        cursor: pointer;
+        transition: 0.2s;
     }
-    .btn:hover { background-color: #333; }
-    .login-link { margin-left: 75%; }
+    
+    .top-bar button:hover {
+        background-color: #333;
+    }
+    
+    /* Transparent Streamlit boxes */
+    [data-testid="stTextInput"] > div:first-child, 
+    [data-testid="stTextArea"] > div:first-child,
+    .css-1adrfps {
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
     </style>
-    
-    <div class="top-bar">
-      <span style="padding-top:60px;">Civil<sub>center</sub></span>
-      <a class="btn login-link" href="?action=login" target="_top">Login</a>
-      <a class="btn" href="?action=signup" target="_top">Sign Up</a>
-    </div>
-    
-    <div style="height:150px;"></div>
     """, unsafe_allow_html=True)
     
-    # --- example: react to session state (show login/signup forms or content) ---
-    if st.session_state['auth_step'] == 1:
-        st.success("Session state set to LOGIN (1). Show your login form here.")
-    elif st.session_state['auth_step'] == 2:
-        st.success("Session state set to SIGNUP (2). Show your signup form here.")
-    else:
-        st.write("Normal app content here.")
+    # === HTML Layout ===
+    st.markdown("""
+    <div class="top-bar">
+        <span style="padding-top: 60px;">Civil<sub>center</sub></span>
+        <button id="login-btn" style="margin-left: 75%;">Login</button>
+        <button id="signup-btn">Sign Up</button>
+    </div>
+    <div style="height: 150px;"></div>
+    """, unsafe_allow_html=True)
+    
+    # === JavaScript bindings ===
+    components.html("""
+    <script>
+    const login = document.getElementById("login-btn");
+    const signup = document.getElementById("signup-btn");
+    
+    if (login) {
+        login.addEventListener("click", () => {
+            window.location.href = window.location.origin + "/login";
+        });
+    }
+    
+    if (signup) {
+        signup.addEventListener("click", () => {
+            window.location.href = window.location.origin + "/signup";
+        });
+    }
+    </script>
+    """, height=0)
 
     # Actually start putting content down here!!!
 
