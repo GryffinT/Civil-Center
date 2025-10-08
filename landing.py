@@ -89,7 +89,7 @@ def landing_page():
     # === HTML Layout ===
     st.markdown("""
     <div class="top-bar">
-        <span style="padding-top: 60px;">Civil<sub>center</sub></span>
+        <span style="padding-top: 60px;">Civil<sub>Center</sub></span>
     </div>
     <div style="height: 150px;"></div>
     """, unsafe_allow_html=True)
@@ -117,7 +117,17 @@ def landing_page():
                <p style="font-size: 30px; color: #000;">Don't fall to the sidelines, <strong>your voice matters</strong>, so make it heard.</p>
         </div>
                 """)
-        st.button("Join the Civil Center community")
+    st.markdown("""
+        <style>
+        .big-button button {
+            padding: 20px 60px;  /* Increase padding */
+            font-size: 24px;     /* Increase font size */
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    if st.button("Join the Civil Center community", key="join"):
+        st.write("Button clicked!")
 
     container = st.container()
     container.html("""
