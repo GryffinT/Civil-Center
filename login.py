@@ -17,7 +17,11 @@ def login_page():
             st.header("Signup")
             signup_username = st.text_input("Username")
             st.text_input("Password")
-        submitted = st.form_submit_button()
+        if signup_username:
+            string = signup_username
+        else:
+            string = login_username
+        submitted = st.form_submit_button(string)
     if submitted:
         st.session_state.page = 0
         st.rerun()
