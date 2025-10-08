@@ -17,8 +17,8 @@ def landing_page():
     st.set_page_config(page_title="Civil Center", page_icon=":guardsman:", layout="wide")
 
     # CSS to create frosted glass effect top bar
-    
-    # === Styles and top bar HTML (visual) ===
+
+    # === Styles and top bar HTML ===
     st.markdown(
         """
         <style>
@@ -30,118 +30,143 @@ def landing_page():
           top: 0;
           left: 0;
           width: 100vw;
-          height: 120px;
+          height: 140px;
           display: flex;
           align-items: center;
           padding: 0 30px;
-          z-index: 9998;
+          z-index: 9999;
           background: rgba(220, 219, 218, 0.5);
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
           box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
+    
+        /* Move the visible title slightly down inside the bar */
         .top-bar .title {
-          font-size: 40px;
+          font-size: 44px;
           font-weight: 700;
           color: #000;
           margin-right: auto;
-        }
-    
-        /* Overlay container where Streamlit will render its buttons */
-        .streamlit-overlay {
-          position: fixed;
-          top: 0;
-          right: 30px;
-          height: 120px;
+          padding-top: 18px; /* nudge down */
+          line-height: 1;
           display: flex;
-          align-items: center;
+          align-items: flex-end;
+        }
+        .top-bar .title sub {
+          font-size: 16px;
+          margin-left: 6px;
+          align-self: flex-end;
+        }
+    
+        /* Container inside the top-bar for native Streamlit widgets moved there */
+        .top-bar .st-widget-container {
+          display: flex;
           gap: 12px;
-          padding: 0;
-          z-index: 10000;
-          pointer-events: none; /* let child Streamlit widget wrappers control pointer-events */
+          align-items: center;
+          height: 100%;
+          margin-left: 12px;
         }
     
-        /* Make the inner Streamlit wrappers accept pointer events */
-        .streamlit-overlay > div {
-          background: transparent !important;
-          box-shadow: none !important;
-          pointer-events: auto;
-          margin: 0 !important;
-          padding: 0 !important;
+        /* Make Streamlit button wrappers transparent so the bar shows through */
+        .top-bar .stButton > button {
+          background: #000;
+          color: #fff;
+          border-radius: 6px;
+          padding: 8px 16px;
+          border: none;
+          font-size: 16px;
+          cursor: pointer;
         }
+        .top-bar .stButton > button:hover { background: #333; }
     
-        /* Small responsive tweak */
+        /* Ensure the moved widgets are clickable and visible */
+        .top-bar * { pointer-events: auto; }
+    
+        /* Spacer so page content doesn't hide under the fixed bar */
+        .topbar-spacer { height: 140px; }
+    
+        /* Responsive */
         @media (max-width: 600px) {
-          .top-bar { height: 90px; padding: 0 12px; }
-          .streamlit-overlay { right: 12px; height: 90px; }
-          .top-bar .title { font-size: 26px; }
+          .top-bar { height: 110px; padding: 0 12px; }
+          .top-bar .title { font-size: 28px; padding-top: 10px; }
+          .topbar-spacer { height: 110px; }
         }
-    
-        /* Spacer so page content doesn't hide under fixed bar */
-        .topbar-spacer { height: 120px; }
         </style>
     
-        <div class="top-bar">
+        <div class="top-bar" id="top-bar">
           <div class="title">Civil<sub>center</sub></div>
+          <!-- placeholder container where we'll move Streamlit button nodes into -->
+          <div class="st-widget-container" id="topbar-widget-container"></div>
         </div>
     
-        <div class="streamlit-overlay" id="streamlit-overlay"></div>
         <div class="topbar-spacer"></div>
         """,
         unsafe_allow_html=True,
     )
     
-    # Create the Streamlit widgets in a hidden horizontal layout
-    cols = st.columns([1, 1, 1])
+    # === Create the Streamlit buttons in the normal flow (they will be moved into the top-bar) ===
+    cols = st.columns([1, 1, 8])  # space for buttons; large column keeps them left-aligned in flow
     with cols[0]:
-        # Create a placeholder for Login button
         login_clicked = st.button("Login")
     with cols[1]:
         signup_clicked = st.button("Signup")
-    with cols[2]:
-        # optional extra control to demonstrate spacing
-        st.empty()
     
-    # Handle clicks in Python
     if login_clicked:
-        st.success("Login clicked")
+        st.success("Login clicked (handled in Python)")
     if signup_clicked:
-        st.success("Signup clicked")
+        st.success("Signup clicked (handled in Python)")
     
-    # Inject the Streamlit widget wrappers into the fixed overlay using a small JS snippet.
-    # This moves the DOM nodes for the created buttons into the overlay while keeping
-    # Streamlit's event handling intact.
+    # === JS: move the Streamlit button wrappers into the .top-bar's widget container ===
     st.markdown(
         """
         <script>
         (function() {
-          // Wait until Streamlit has rendered its widgets
-          function moveWidgets() {
-            const overlay = document.getElementById("streamlit-overlay");
-            if (!overlay) return;
-            // Streamlit places widgets inside <div data-testid="stButton"> wrappers;
-            // find the last two stButton wrappers on the page (our Login and Signup)
-            const buttons = Array.from(document.querySelectorAll('div[data-testid="stButton"]'));
-            if (buttons.length < 2) {
-              requestAnimationFrame(moveWidgets);
+          const MAX_TRIES = 60;
+          let tries = 0;
+    
+          function moveButtons() {
+            tries += 1;
+            const container = document.getElementById("topbar-widget-container");
+            const topBar = document.getElementById("top-bar");
+            if (!container || !topBar) {
+              if (tries < MAX_TRIES) requestAnimationFrame(moveButtons);
               return;
             }
-            // Take the two most recently added buttons (likely ours)
-            const last = buttons.slice(-2);
-            // Move them into the overlay
-            last.forEach(node => {
-              if (!overlay.contains(node)) {
-                overlay.appendChild(node);
+    
+            // Find Streamlit button wrappers by data-testid
+            const allButtons = Array.from(document.querySelectorAll('div[data-testid="stButton"]'));
+            if (allButtons.length === 0) {
+              if (tries < MAX_TRIES) requestAnimationFrame(moveButtons);
+              return;
+            }
+    
+            // Heuristic: pick the two most recently rendered buttons (the last two)
+            const toMove = allButtons.slice(-2);
+    
+            toMove.forEach(node => {
+              // Avoid moving if already moved
+              if (!container.contains(node)) {
+                container.appendChild(node);
               }
             });
+    
+            // Make sure container matches top-bar height (optional)
+            container.style.height = topBar.clientHeight + "px";
           }
-          // Kick off
-          requestAnimationFrame(moveWidgets);
+    
+          // Wait for Streamlit to render widgets and then move them
+          requestAnimationFrame(moveButtons);
+          // Also try again a few times to handle streaming rendering
+          setTimeout(moveButtons, 150);
+          setTimeout(moveButtons, 500);
+          setTimeout(moveButtons, 1200);
         })();
         </script>
         """,
         unsafe_allow_html=True,
     )
+    
+    # === Rest of the page content ===
 
     col1, col2, col3 = st.columns([5,.5,5])
     with col3:
