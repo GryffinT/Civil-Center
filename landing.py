@@ -152,6 +152,7 @@ def landing_page():
             if button:
                 st.session_state.page = 1
                 print("Button clicked")
+                st.rerun()
             
 
 
