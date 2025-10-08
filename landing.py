@@ -3,6 +3,7 @@ from PIL import Image, ImageOps, ImageDraw
 import base64
 from pathlib import Path
 import streamlit.components.v1 as components
+import time
 
 def landing_page():
     BASE_DIR = Path(__file__).parent
@@ -18,13 +19,12 @@ def landing_page():
 
     # CSS to create frosted glass effect top bar
 
-    # === Styles and top bar HTML ===
+    # === Top-bar HTML and CSS ===
     st.markdown(
         """
         <style>
         body { margin: 0; }
     
-        /* Frosted top bar */
         .top-bar {
           position: fixed;
           top: 0;
@@ -33,42 +33,37 @@ def landing_page():
           height: 140px;
           display: flex;
           align-items: center;
-          padding: 0 30px;
+          padding: 0 24px;
           z-index: 9999;
-          background: rgba(220, 219, 218, 0.5);
+          background: rgba(220,219,218,0.55);
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+          gap: 12px;
         }
     
-        /* Move the visible title slightly down inside the bar */
         .top-bar .title {
           font-size: 44px;
           font-weight: 700;
           color: #000;
           margin-right: auto;
-          padding-top: 18px; /* nudge down */
+          padding-top: 18px;
           line-height: 1;
           display: flex;
           align-items: flex-end;
         }
-        .top-bar .title sub {
-          font-size: 16px;
-          margin-left: 6px;
-          align-self: flex-end;
-        }
+        .top-bar .title sub { font-size: 14px; margin-left: 6px; align-self: flex-end; }
     
-        /* Container inside the top-bar for native Streamlit widgets moved there */
-        .top-bar .st-widget-container {
+        /* The placeholder container inside the top-bar where we'll place Streamlit widget nodes */
+        #topbar-widget-slot {
           display: flex;
           gap: 12px;
           align-items: center;
           height: 100%;
-          margin-left: 12px;
         }
     
-        /* Make Streamlit button wrappers transparent so the bar shows through */
-        .top-bar .stButton > button {
+        /* Make sure moved Streamlit wrappers look good on the bar */
+        #topbar-widget-slot div[data-testid="stButton"] > button {
           background: #000;
           color: #fff;
           border-radius: 6px;
@@ -77,16 +72,11 @@ def landing_page():
           font-size: 16px;
           cursor: pointer;
         }
-        .top-bar .stButton > button:hover { background: #333; }
+        #topbar-widget-slot div[data-testid="stButton"] > button:hover { background: #333; }
     
-        /* Ensure the moved widgets are clickable and visible */
-        .top-bar * { pointer-events: auto; }
-    
-        /* Spacer so page content doesn't hide under the fixed bar */
         .topbar-spacer { height: 140px; }
     
-        /* Responsive */
-        @media (max-width: 600px) {
+        @media (max-width:600px){
           .top-bar { height: 110px; padding: 0 12px; }
           .top-bar .title { font-size: 28px; padding-top: 10px; }
           .topbar-spacer { height: 110px; }
@@ -95,8 +85,7 @@ def landing_page():
     
         <div class="top-bar" id="top-bar">
           <div class="title">Civil<sub>center</sub></div>
-          <!-- placeholder container where we'll move Streamlit button nodes into -->
-          <div class="st-widget-container" id="topbar-widget-container"></div>
+          <div id="topbar-widget-slot" aria-hidden="true"></div>
         </div>
     
         <div class="topbar-spacer"></div>
@@ -104,62 +93,82 @@ def landing_page():
         unsafe_allow_html=True,
     )
     
-    # === Create the Streamlit buttons in the normal flow (they will be moved into the top-bar) ===
-    cols = st.columns([1, 1, 8])  # space for buttons; large column keeps them left-aligned in flow
-    with cols[0]:
+    # === Create two placeholders and render Streamlit buttons into them ===
+    # We intentionally create these buttons in the normal Streamlit flow so Python receives clicks.
+    login_slot = st.empty()
+    signup_slot = st.empty()
+    
+    with login_slot:
         login_clicked = st.button("Login")
-    with cols[1]:
+    
+    with signup_slot:
         signup_clicked = st.button("Signup")
     
     if login_clicked:
         st.success("Login clicked (handled in Python)")
+    
     if signup_clicked:
         st.success("Signup clicked (handled in Python)")
     
-    # === JS: move the Streamlit button wrappers into the .top-bar's widget container ===
+    # Small delay to increase chance that Streamlit has flushed the widget DOM before JS runs
+    time.sleep(0.02)
+    
+    # === JS: move the exact button wrappers into the top-bar slot (nested INSIDE the frosted div) ===
+    # This script finds the button wrappers for the specific labels "Login" and "Signup"
+    # and appends their wrapper nodes into #topbar-widget-slot so they are truly nested.
     st.markdown(
         """
         <script>
-        (function() {
-          const MAX_TRIES = 60;
+        (function () {
+          const MAX_TRIES = 80;
           let tries = 0;
     
-          function moveButtons() {
+          function moveSpecificButtons() {
             tries += 1;
-            const container = document.getElementById("topbar-widget-container");
-            const topBar = document.getElementById("top-bar");
-            if (!container || !topBar) {
-              if (tries < MAX_TRIES) requestAnimationFrame(moveButtons);
+            const slot = document.getElementById("topbar-widget-slot");
+            if (!slot) {
+              if (tries < MAX_TRIES) requestAnimationFrame(moveSpecificButtons);
               return;
             }
     
-            // Find Streamlit button wrappers by data-testid
-            const allButtons = Array.from(document.querySelectorAll('div[data-testid="stButton"]'));
-            if (allButtons.length === 0) {
-              if (tries < MAX_TRIES) requestAnimationFrame(moveButtons);
+            // Find all Streamlit button wrappers
+            const wrappers = Array.from(document.querySelectorAll('div[data-testid="stButton"]'));
+    
+            if (wrappers.length === 0) {
+              if (tries < MAX_TRIES) requestAnimationFrame(moveSpecificButtons);
               return;
             }
     
-            // Heuristic: pick the two most recently rendered buttons (the last two)
-            const toMove = allButtons.slice(-2);
+            // Helper to find a wrapper whose inner button text equals label
+            function findWrapperByLabel(label) {
+              return wrappers.find(w => {
+                const btn = w.querySelector("button");
+                return btn && btn.innerText && btn.innerText.trim() === label;
+              }) || null;
+            }
     
-            toMove.forEach(node => {
-              // Avoid moving if already moved
-              if (!container.contains(node)) {
-                container.appendChild(node);
-              }
-            });
+            const loginWrapper = findWrapperByLabel("Login");
+            const signupWrapper = findWrapperByLabel("Signup");
     
-            // Make sure container matches top-bar height (optional)
-            container.style.height = topBar.clientHeight + "px";
+            // Only move if we found the wrappers
+            if (loginWrapper && !slot.contains(loginWrapper)) slot.appendChild(loginWrapper);
+            if (signupWrapper && !slot.contains(signupWrapper)) slot.appendChild(signupWrapper);
+    
+            // If both moved, stop; otherwise retry a few more times for slow rendering
+            if ((loginWrapper && slot.contains(loginWrapper)) && (signupWrapper && slot.contains(signupWrapper))) {
+              // ensure the slot height matches the top-bar
+              const topBar = document.getElementById("top-bar");
+              if (topBar) slot.style.height = topBar.clientHeight + "px";
+              return;
+            }
+    
+            if (tries < MAX_TRIES) requestAnimationFrame(moveSpecificButtons);
           }
     
-          // Wait for Streamlit to render widgets and then move them
-          requestAnimationFrame(moveButtons);
-          // Also try again a few times to handle streaming rendering
-          setTimeout(moveButtons, 150);
-          setTimeout(moveButtons, 500);
-          setTimeout(moveButtons, 1200);
+          requestAnimationFrame(moveSpecificButtons);
+          setTimeout(moveSpecificButtons, 150);
+          setTimeout(moveSpecificButtons, 600);
+          setTimeout(moveSpecificButtons, 1200);
         })();
         </script>
         """,
