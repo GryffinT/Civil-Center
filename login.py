@@ -1,10 +1,15 @@
 import streamlit as st
+from streamlit_javascript import st_javascript
 
-def login_page():
-    with st.container():
-        st.markdown(
-            '<div style="background-color: #f0f0f0; padding: 20px; border-radius: 8px;">',
-            unsafe_allow_html=True
-        )
-        st.button("Click me")
-        st.markdown('</div>', unsafe_allow_html=True)  
+def login_page(): 
+    st.subheader("Javascript API call")
+    st.button("test")
+    if st.button:
+        return_val =st_javascript("""function(response) { return (True)}""")
+    
+    return_value = st_javascript("""await fetch("https://reqres.in/api/products/3").then(function(response) {
+        return response.json();
+    }) """)
+    
+    st.markdown(f"Return value was: {return_value}")
+    print(f"Return value was: {return_value}")
