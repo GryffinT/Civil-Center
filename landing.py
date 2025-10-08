@@ -33,7 +33,7 @@ def landing_page():
 
 
     # CSS to create frosted glass effect top bar
-    componenets.html("""
+    components.html("""
     <style>
     .css-18e3th9 {
         padding: 0 !important;
