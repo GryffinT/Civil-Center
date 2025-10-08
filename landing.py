@@ -2,6 +2,8 @@ import streamlit as st
 from PIL import Image, ImageOps, ImageDraw
 import base64
 from pathlib import Path
+import streamlit.components.v1 as components
+
 
 def landing_page():
     BASE_DIR = Path(__file__).parent
