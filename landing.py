@@ -114,11 +114,6 @@ def landing_page():
                <p style="font-size: 30px; color: #000;">Don't fall to the sidelines, <strong>your voice matters</strong>, so make it heard.</p>
         </div>
                 """)
-        
-    file_path = "./Media/landingpage/seminar.gif"
-    with open(file_path, "rb") as f:
-        data = f.read()
-    b64 = base64.b64encode(data).decode()
 
     container = st.container()
     container.html("""
@@ -150,7 +145,7 @@ def landing_page():
 
             <!-- Left small rectangle -->
             <div class="small-rect" style="text-align: left;">
-                <img src="./Media/landingpage/seminar.gif" style="width:100px; height:100px;" />
+                <img src="https://i.postimg.cc/ZRZqjs3q/seminar.gif" style="width:100px; height:100px;" />
                 <p style="color: #666;">Voice your ideas</p>
             </div>
 
