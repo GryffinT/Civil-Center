@@ -23,7 +23,7 @@ def login_page():
             string = login
         else:
             string = "Submit"
-        submitted = st.form_submit_button(string)
+        submitted = st.form_submit_button(key="register", label=string)
     if submitted:
         st.session_state.page = 0
         st.rerun()
