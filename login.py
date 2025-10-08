@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_javascript import st_javascript
 
-if "page" not in st.sesion_state:
+if "page" not in st.session_state:
     st.session_state.page = 1
 
 def login_page(): 
