@@ -19,19 +19,13 @@ def landing_page():
 
     # CSS to create frosted glass effect top bar
 
+# Make sure the session state key exists
+if "page" not in st.session_state:
+    st.session_state.page = 0
+
     # === Styles ===
     st.markdown("""
     <style>
-    .css-18e3th9 {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-    
-    body {
-        margin: 0;
-    }
-    
-    /* Full-width frosted top bar */
     .top-bar {
         position: fixed;
         top: 0;
@@ -42,26 +36,19 @@ def landing_page():
         align-items: center;
         padding-left: 30px;
         z-index: 9999;
-    
         background: rgba(220, 219, 218, 0.5);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    
-    /* Text inside the bar */
     .top-bar span {
         font-size: 50px;
         font-weight: bold;
         color: black;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        background: transparent !important;
     }
-    
-    /* Buttons */
-    .top-bar button {
-        margin-top: 60px;
-        margin-right: 30px;
+    .top-bar .stButton button {
+        margin-left: 20px;
         padding: 10px 20px;
         font-size: 20px;
         background-color: #000;
@@ -71,50 +58,23 @@ def landing_page():
         cursor: pointer;
         transition: 0.2s;
     }
-    
-    .top-bar button:hover {
+    .top-bar .stButton button:hover {
         background-color: #333;
-    }
-    
-    /* Transparent Streamlit boxes */
-    [data-testid="stTextInput"] > div:first-child, 
-    [data-testid="stTextArea"] > div:first-child,
-    .css-1adrfps {
-        background-color: transparent !important;
-        box-shadow: none !important;
     }
     </style>
     """, unsafe_allow_html=True)
     
-    # === HTML Layout ===
-    st.markdown("""
-    <div class="top-bar">
-        <span style="padding-top: 60px;">Civil<sub>center</sub></span>
-        <button id="login-btn" style="margin-left: 75%;">Login</button>
-        <button id="signup-btn">Sign Up</button>
-    </div>
-    <div style="height: 150px;"></div>
-    """, unsafe_allow_html=True)
+    # === Top bar ===
+    col1, col2, col3 = st.columns([1,6,1])
+    with col1:
+        st.markdown('<span style="padding-top: 60px;">Civil<sub>center</sub></span>', unsafe_allow_html=True)
+    with col3:
+        if st.button("Login"):
+            st.session_state.page = 1
+        if st.button("Sign Up"):
+            st.session_state.page = 2
     
-    # === JavaScript bindings ===
-    components.html("""
-    <script>
-    const login = document.getElementById("login-btn");
-    const signup = document.getElementById("signup-btn");
-    
-    if (login) {
-        login.addEventListener("click", () => {
-            alert("Login button clicked!");
-        });
-    }
-    
-    if (signup) {
-        signup.addEventListener("click", () => {
-            alert("Login button clicked!");
-        });
-    }
-    </script>
-    """, height=0)
+    st.write("Current page:", st.session_state.page)
 
     # Actually start putting content down here!!!
 
