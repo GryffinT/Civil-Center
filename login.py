@@ -19,7 +19,7 @@ def login_page():
             st.text_input(key="sp", label="Password")
         if signup_username:
             string = signup
-        else if login_username:
+        elif login_username:
             string = login
         else:
             string = "Submit"
