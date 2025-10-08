@@ -3,7 +3,7 @@ from PIL import Image, ImageOps, ImageDraw
 import base64
 from pathlib import Path
 import streamlit.components.v1 as components
-import time
+
 
 def landing_page():
     BASE_DIR = Path(__file__).parent
@@ -19,143 +19,103 @@ def landing_page():
 
     # CSS to create frosted glass effect top bar
 
-    # === Top-bar HTML + CSS (has a slot where we'll place Streamlit button wrappers) ===
-    st.markdown(
-        """
-        <style>
-        body { margin: 0; }
-        .top-bar {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 140px;
-          display: flex;
-          align-items: center;
-          padding: 0 24px;
-          gap: 12px;
-          z-index: 9999;
-          background: rgba(220,219,218,0.55);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-        }
-        .top-bar .title {
-          font-size: 44px;
-          font-weight: 700;
-          color: #000;
-          margin-right: auto;
-          padding-top: 18px;
-          line-height: 1;
-          display: flex;
-          align-items: flex-end;
-        }
-        .top-bar .title sub { font-size: 14px; margin-left: 6px; align-self: flex-end; }
-        #topbar-widget-slot {
-          display:flex;
-          gap:12px;
-          align-items:center;
-          height:100%;
-          margin-left:12px;
-        }
-        /* style for moved Streamlit button wrappers */
-        #topbar-widget-slot div[data-testid="stButton"] > button {
-          background: #000;
-          color: #fff;
-          border-radius: 6px;
-          padding: 8px 16px;
-          border: none;
-          font-size: 16px;
-          cursor: pointer;
-        }
-        #topbar-widget-slot div[data-testid="stButton"] > button:hover { background: #333; }
-        .topbar-spacer { height: 140px; }
-        @media (max-width:600px){
-          .top-bar { height:110px; padding:0 12px; }
-          .top-bar .title { font-size:28px; padding-top:10px; }
-          .topbar-spacer { height:110px; }
-        }
-        </style>
+    # === Styles ===
+    st.markdown("""
+    <style>
+    .css-18e3th9 {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
     
-        <div class="top-bar" id="top-bar">
-          <div class="title">Civil<sub>center</sub></div>
-          <div id="topbar-widget-slot" aria-hidden="true"></div>
-        </div>
+    body {
+        margin: 0;
+    }
     
-        <div class="topbar-spacer"></div>
-        """,
-        unsafe_allow_html=True,
-    )
+    /* Full-width frosted top bar */
+    .top-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        padding-left: 30px;
+        z-index: 9999;
     
-    # === Create Streamlit buttons in normal flow so Python gets clicks ===
-    login_placeholder = st.empty()
-    signup_placeholder = st.empty()
+        background: rgba(220, 219, 218, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
     
-    with login_placeholder:
-        login_clicked = st.button("Login")
+    /* Text inside the bar */
+    .top-bar span {
+        font-size: 50px;
+        font-weight: bold;
+        color: black;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        background: transparent !important;
+    }
     
-    with signup_placeholder:
-        signup_clicked = st.button("Signup")
+    /* Buttons */
+    .top-bar button {
+        margin-top: 60px;
+        margin-right: 30px;
+        padding: 10px 20px;
+        font-size: 20px;
+        background-color: #000;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
     
-    if login_clicked:
-        st.success("Login clicked (handled in Python)")
-    if signup_clicked:
-        st.success("Signup clicked (handled in Python)")
+    .top-bar button:hover {
+        background-color: #333;
+    }
     
-    # === Robust JS: MutationObserver to wait for Streamlit button wrappers and move the exact wrappers into the slot ===
-    # This reliably nests the Streamlit DOM nodes INSIDE the frosted top-bar div.
-    st.markdown(
-        """
-        <script>
-        (function() {
-          const slot = document.getElementById('topbar-widget-slot');
-          if (!slot) return;
+    /* Transparent Streamlit boxes */
+    [data-testid="stTextInput"] > div:first-child, 
+    [data-testid="stTextArea"] > div:first-child,
+    .css-1adrfps {
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
     
-          // Helper: find wrapper by visible button text
-          function findWrapper(label) {
-            const wrappers = Array.from(document.querySelectorAll('div[data-testid="stButton"]'));
-            return wrappers.find(w => {
-              const btn = w.querySelector('button');
-              return btn && btn.innerText && btn.innerText.trim() === label;
-            }) || null;
-          }
+    # === HTML Layout ===
+    st.markdown("""
+    <div class="top-bar">
+        <span style="padding-top: 60px;">Civil<sub>center</sub></span>
+        <button id="login-btn" style="margin-left: 75%;">Login</button>
+        <button id="signup-btn">Sign Up</button>
+    </div>
+    <div style="height: 150px;"></div>
+    """, unsafe_allow_html=True)
     
-          // Try immediate move if available
-          function tryMove() {
-            const login = findWrapper('Login');
-            const signup = findWrapper('Signup');
-            let moved = false;
-            if (login && !slot.contains(login)) { slot.appendChild(login); moved = true; }
-            if (signup && !slot.contains(signup)) { slot.appendChild(signup); moved = true; }
-            // adjust slot height to match top bar
-            const topBar = document.getElementById('top-bar');
-            if (topBar) slot.style.height = topBar.clientHeight + 'px';
-            return moved && login && signup;
-          }
+    # === JavaScript bindings ===
+    components.html("""
+    <script>
+    const login = document.getElementById("login-btn");
+    const signup = document.getElementById("signup-btn");
     
-          if (tryMove()) return;
+    if (login) {
+        login.addEventListener("click", () => {
+            alert("Login button clicked!");
+        });
+    }
     
-          // If buttons are not yet rendered, observe DOM for changes and move when they appear
-          const observer = new MutationObserver((mutations, obs) => {
-            if (tryMove()) {
-              obs.disconnect();
-            }
-          });
-    
-          observer.observe(document.body, { childList: true, subtree: true });
-    
-          // Fallback: periodic attempts for a short duration
-          let attempts = 0;
-          const interval = setInterval(() => {
-            attempts += 1;
-            if (tryMove() || attempts > 60) clearInterval(interval);
-          }, 100);
-        })();
-        </script>
-        """,
-        unsafe_allow_html=True,
-    )
-
+    if (signup) {
+        signup.addEventListener("click", () => {
+            alert("Login button clicked!");
+        });
+    }
+    </script>
+    """, height=0)
+    # Actually start putting content down here!!!
 
     col1, col2, col3 = st.columns([5,.5,5])
     with col3:
@@ -290,6 +250,7 @@ def landing_page():
                         </div>
                    </div>
                    """)
+
 
 
 
