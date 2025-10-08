@@ -8,7 +8,7 @@ def login_page():
     col1, col2, col3 = st.columns(3)
     
     with col1:
-    
+        pass
     with col2:
         with st.form("my_form"):
             tab1, tab2 = st.tabs(["Login", "Signup"])
@@ -29,3 +29,4 @@ def login_page():
 
     
     with col3:
+        pass
