@@ -119,33 +119,24 @@ def landing_page():
         </div>
                 """)
 
-        # Custom big button using HTML/CSS
-        st.markdown("""
-            <style>
-            .big-btn {
-                background-color: #4462fc;
-                color: white;
+        # HTML for a big button
+        components.html("""
+            <button style="
                 padding: 20px 60px;
                 font-size: 24px;
+                background-color: #4462fc;
+                color: white;
                 border: none;
                 border-radius: 8px;
                 cursor: pointer;
-            }
-            .big-btn:hover {
-                background-color: #364fc7;
-            }
-            </style>
-            <button class="big-btn" onclick="window.parent.postMessage({func:'button_clicked'}, '*')">
+                width: 100%;
+            " onclick="document.title='clicked'">
                 Join the Civil Center community
             </button>
-        """, unsafe_allow_html=True)
+        """, height=100)
         
-        # Detect click via Streamlit events
-        from streamlit.runtime.scriptrunner import add_script_run_ctx
-        import streamlit.components.v1 as components
-        
-        clicked = st.session_state.get("button_clicked", False)
-        if clicked:
+        # Detect the click by checking a session variable
+        if st.session_state.get("clicked", False):
             st.write("Button clicked!")
 
     container = st.container()
