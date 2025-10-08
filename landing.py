@@ -86,6 +86,7 @@ def landing_page():
     """)
 
     # === HTML Layout ===
+    st.button("Hello")
     st.markdown("""
     <div class="top-bar">
         <span style="padding-top: 60px;">Civil<sub>center</sub></span>
