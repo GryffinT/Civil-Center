@@ -139,6 +139,7 @@ def landing_page():
                <p style="font-size: 30px; color: #000;">Don't fall to the sidelines, <strong>your voice matters</strong>, so make it heard.</p>
         </div>
                 """)
+        st.button("Join the Civil Center community")
 
     container = st.container()
     container.html("""
@@ -205,7 +206,6 @@ def landing_page():
                 <li style="font-size: 25px; margin-bottom: 10px;">Log in using your new credentials and start engaging with the community!</li>
             """)
     
-    st.button("Join the Civil Center community")
     
     container.html("""
                    <div style="background-color: #f5f5f5; padding: -10px; border-radius: 15px; margin-top: 50px;padding-bottom: -10px; margin-bottom: 10px;">
