@@ -118,7 +118,34 @@ def landing_page():
                <p style="font-size: 30px; color: #000;">Don't fall to the sidelines, <strong>your voice matters</strong>, so make it heard.</p>
         </div>
                 """)
-        st.button(r"$\footnotesize\text{Join the Civil Center Community}$")
+
+        st.markdown(
+            """
+            <style>
+            .stFormSubmitButton>button {
+                font-size: 30px;
+                background-color: #efefefef;
+                border: none;
+                color: black;
+                margin: 0 auto;
+                height: 100px;
+            }
+            .stFormSubmitButton>button p {
+                font-size: 30px;
+                border: none;
+            }
+            .stFormSubmitButton>button:hover {
+                background-color: #dfdfdfdd;
+                color: black;
+                border: none;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        with st.form("test", border=False):
+            st.form_submit_button('Join the Civil Center community')
 
 
     container = st.container()
