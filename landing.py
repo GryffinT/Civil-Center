@@ -18,7 +18,7 @@ def landing_page():
     st.set_page_config(page_title="Civil Center", page_icon=":guardsman:", layout="wide")
 
     # CSS to create frosted glass effect top bar
-
+    
     # --- read query params and turn them into session state flags ---
     params = st.get_query_params()
     action = params.get("action", [None])[0]
@@ -29,7 +29,7 @@ def landing_page():
         elif action == "signup":
             st.session_state['auth_step'] = 2
         # clear query params so refresh doesn't re-trigger
-        st.et_query_params()
+        st.set_query_params()
         # rerun to pick up the new session_state immediately
         st.rerun()
     
@@ -91,11 +91,9 @@ def landing_page():
     
     # --- example: react to session state (show login/signup forms or content) ---
     if st.session_state['auth_step'] == 1:
-        print("CLICKED")
-        # put your login form/rendering logic here
+        st.success("Session state set to LOGIN (1). Show your login form here.")
     elif st.session_state['auth_step'] == 2:
         st.success("Session state set to SIGNUP (2). Show your signup form here.")
-        # put your signup form/rendering logic here
     else:
         st.write("Normal app content here.")
 
