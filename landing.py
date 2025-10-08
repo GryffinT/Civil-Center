@@ -104,13 +104,13 @@ def landing_page():
     
     if (login) {
         login.addEventListener("click", () => {
-            window.location.href = window.location.origin + "/login";
+            alert("Login button clicked!");
         });
     }
     
     if (signup) {
         signup.addEventListener("click", () => {
-            window.location.href = window.location.origin + "/signup";
+            alert("Login button clicked!");
         });
     }
     </script>
