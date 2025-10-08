@@ -4,7 +4,6 @@ import base64
 from pathlib import Path
 import streamlit.components.v1 as components
 
-
 def landing_page():
     BASE_DIR = Path(__file__).parent
     def round_image(img_path, corner_radius, image_width=400, image_height=400):
@@ -18,83 +17,131 @@ def landing_page():
     st.set_page_config(page_title="Civil Center", page_icon=":guardsman:", layout="wide")
 
     # CSS to create frosted glass effect top bar
-
-    # === Styles ===
-    st.markdown("""
-    <style>
-    .css-18e3th9 {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
     
-    body {
-        margin: 0;
-    }
+    # === Styles and top bar HTML (visual) ===
+    st.markdown(
+        """
+        <style>
+        body { margin: 0; }
     
-    /* Full-width frosted top bar */
-    .top-bar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 150px;
-        display: flex;
-        align-items: center;
-        padding-left: 30px;
-        z-index: 9999;
+        /* Frosted top bar */
+        .top-bar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 120px;
+          display: flex;
+          align-items: center;
+          padding: 0 30px;
+          z-index: 9998;
+          background: rgba(220, 219, 218, 0.5);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .top-bar .title {
+          font-size: 40px;
+          font-weight: 700;
+          color: #000;
+          margin-right: auto;
+        }
     
-        background: rgba(220, 219, 218, 0.5);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
+        /* Overlay container where Streamlit will render its buttons */
+        .streamlit-overlay {
+          position: fixed;
+          top: 0;
+          right: 30px;
+          height: 120px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 0;
+          z-index: 10000;
+          pointer-events: none; /* let child Streamlit widget wrappers control pointer-events */
+        }
     
-    /* Text inside the bar */
-    .top-bar span {
-        font-size: 50px;
-        font-weight: bold;
-        color: black;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        background: transparent !important;
-    }
+        /* Make the inner Streamlit wrappers accept pointer events */
+        .streamlit-overlay > div {
+          background: transparent !important;
+          box-shadow: none !important;
+          pointer-events: auto;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
     
-    /* Buttons */
-    .top-bar button {
-        margin-top: 60px;
-        margin-right: 30px;
-        padding: 10px 20px;
-        font-size: 20px;
-        background-color: #000;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
+        /* Small responsive tweak */
+        @media (max-width: 600px) {
+          .top-bar { height: 90px; padding: 0 12px; }
+          .streamlit-overlay { right: 12px; height: 90px; }
+          .top-bar .title { font-size: 26px; }
+        }
     
-    .top-bar button:hover {
-        background-color: #333;
-    }
+        /* Spacer so page content doesn't hide under fixed bar */
+        .topbar-spacer { height: 120px; }
+        </style>
     
-    /* Transparent Streamlit boxes */
-    [data-testid="stTextInput"] > div:first-child, 
-    [data-testid="stTextArea"] > div:first-child,
-    .css-1adrfps {
-        background-color: transparent !important;
-        box-shadow: none !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+        <div class="top-bar">
+          <div class="title">Civil<sub>center</sub></div>
+        </div>
     
-    # === HTML Layout ===
-    st.markdown(f"""
-    <div class="top-bar">
-        <span style="padding-top: 60px;">Civil<sub>center</sub></span>
-        {st.button("Login")}
-        {st.button("Signup")}
-    </div>
-    <div style="height: 150px;"></div>
-    """, unsafe_allow_html=True)
+        <div class="streamlit-overlay" id="streamlit-overlay"></div>
+        <div class="topbar-spacer"></div>
+        """,
+        unsafe_allow_html=True,
+    )
+    
+    # Create the Streamlit widgets in a hidden horizontal layout
+    cols = st.columns([1, 1, 1])
+    with cols[0]:
+        # Create a placeholder for Login button
+        login_clicked = st.button("Login")
+    with cols[1]:
+        signup_clicked = st.button("Signup")
+    with cols[2]:
+        # optional extra control to demonstrate spacing
+        st.empty()
+    
+    # Handle clicks in Python
+    if login_clicked:
+        st.success("Login clicked")
+    if signup_clicked:
+        st.success("Signup clicked")
+    
+    # Inject the Streamlit widget wrappers into the fixed overlay using a small JS snippet.
+    # This moves the DOM nodes for the created buttons into the overlay while keeping
+    # Streamlit's event handling intact.
+    st.markdown(
+        """
+        <script>
+        (function() {
+          // Wait until Streamlit has rendered its widgets
+          function moveWidgets() {
+            const overlay = document.getElementById("streamlit-overlay");
+            if (!overlay) return;
+            // Streamlit places widgets inside <div data-testid="stButton"> wrappers;
+            // find the last two stButton wrappers on the page (our Login and Signup)
+            const buttons = Array.from(document.querySelectorAll('div[data-testid="stButton"]'));
+            if (buttons.length < 2) {
+              requestAnimationFrame(moveWidgets);
+              return;
+            }
+            // Take the two most recently added buttons (likely ours)
+            const last = buttons.slice(-2);
+            // Move them into the overlay
+            last.forEach(node => {
+              if (!overlay.contains(node)) {
+                overlay.appendChild(node);
+              }
+            });
+          }
+          // Kick off
+          requestAnimationFrame(moveWidgets);
+        })();
+        </script>
+        """,
+        unsafe_allow_html=True,
+    )
 
     col1, col2, col3 = st.columns([5,.5,5])
     with col3:
