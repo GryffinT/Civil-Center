@@ -7,6 +7,9 @@ from streamlit.runtime.scriptrunner import add_script_run_ctx
 import streamlit.components.v1 as components
 
 def landing_page():
+    if page not in st.session_state:
+        st.session_state.page = 0
+    
     BASE_DIR = Path(__file__).parent
     def round_image(img_path, corner_radius, image_width=400, image_height=400):
         img = Image.open(img_path)
@@ -145,7 +148,11 @@ def landing_page():
         )
 
         with st.form("test", border=False):
-            st.form_submit_button('Join the Civil Center community')
+            button = st.form_submit_button('Join the Civil Center community')
+            if button:
+                st.session_state.page = 1
+                print("Button clicked")
+            
 
 
     container = st.container()
