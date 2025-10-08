@@ -120,7 +120,7 @@ def landing_page():
     st.markdown("""
         <style>
         .big-button button {
-            padding: 20px 60px;  /* Increase padding */
+            padding: 40px 60px;  /* Increase padding */
             font-size: 24px;     /* Increase font size */
         }
         </style>
