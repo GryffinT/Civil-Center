@@ -1,6 +1,5 @@
 import streamlit as st
 from PIL import Image, ImageOps, ImageDraw
-from streamlit_drawable_canvas import st_canvas
 import base64
 
 def landing_page():
