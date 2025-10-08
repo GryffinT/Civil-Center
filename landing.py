@@ -7,7 +7,7 @@ from streamlit.runtime.scriptrunner import add_script_run_ctx
 import streamlit.components.v1 as components
 
 def landing_page():
-    if page not in st.session_state:
+    if "page" not in st.session_state:
         st.session_state.page = 0
     
     BASE_DIR = Path(__file__).parent
