@@ -103,7 +103,7 @@ def landing_page():
     
     if (login) {
         login.addEventListener("click", () => {
-            window.location.href = window.location.origin + "/login";
+            window.location.href = "https://docs.streamlit.io/develop/api-reference/layout/st.empty";
         });
     }
     
