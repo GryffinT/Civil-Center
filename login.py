@@ -19,6 +19,7 @@ def login_page():
                 login_username = st.text_input(key="lu", label="Username")
                 st.write("")
                 st.text_input(key="lp", label="Password")
+                st.write("")
             with tab2:
                 signup_username = ""
                 st.header("Signup")
