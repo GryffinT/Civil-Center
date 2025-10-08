@@ -3,7 +3,8 @@ from PIL import Image, ImageOps, ImageDraw
 import base64
 from pathlib import Path
 import streamlit.components.v1 as components
-
+from streamlit.runtime.scriptrunner import add_script_run_ctx
+import streamlit.components.v1 as components
 
 def landing_page():
     BASE_DIR = Path(__file__).parent
@@ -117,17 +118,35 @@ def landing_page():
                <p style="font-size: 30px; color: #000;">Don't fall to the sidelines, <strong>your voice matters</strong>, so make it heard.</p>
         </div>
                 """)
-    st.markdown("""
-        <style>
-        .big-button button {
-            padding: 40px 60px;  /* Increase padding */
-            font-size: 24px;     /* Increase font size */
-        }
-        </style>
-    """, unsafe_allow_html=True)
-    
-    if st.button("Join the Civil Center community", key="join"):
-        st.write("Button clicked!")
+
+        # Custom big button using HTML/CSS
+        st.markdown("""
+            <style>
+            .big-btn {
+                background-color: #4462fc;
+                color: white;
+                padding: 20px 60px;
+                font-size: 24px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+            .big-btn:hover {
+                background-color: #364fc7;
+            }
+            </style>
+            <button class="big-btn" onclick="window.parent.postMessage({func:'button_clicked'}, '*')">
+                Join the Civil Center community
+            </button>
+        """, unsafe_allow_html=True)
+        
+        # Detect click via Streamlit events
+        from streamlit.runtime.scriptrunner import add_script_run_ctx
+        import streamlit.components.v1 as components
+        
+        clicked = st.session_state.get("button_clicked", False)
+        if clicked:
+            st.write("Button clicked!")
 
     container = st.container()
     container.html("""
