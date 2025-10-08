@@ -83,7 +83,7 @@ def landing_page():
         box-shadow: none !important;
     }
     </style>
-    """, unsafe_allow_html=True)
+    """)
 
     # === HTML Layout ===
     st.markdown("""
