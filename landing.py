@@ -19,14 +19,15 @@ def landing_page():
 
     # CSS to create frosted glass effect top bar
 
-    components.html("""
-    <!DOCTYPE html>
-    <html>
-    <head>
+    st.html("""
     <style>
+    .css-18e3th9 {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
     body {
         margin: 0;
-        font-family: sans-serif;
     }
     
     /* Full-width frosted top bar */
@@ -53,6 +54,7 @@ def landing_page():
         font-weight: bold;
         color: black;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        background: transparent !important;
     }
     
     /* Buttons */
@@ -72,33 +74,17 @@ def landing_page():
     .top-bar button:hover {
         background-color: #333;
     }
+    
+    /* Transparent Streamlit boxes */
+    [data-testid="stTextInput"] > div:first-child, 
+    [data-testid="stTextArea"] > div:first-child,
+    .css-1adrfps {
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
     </style>
-    </head>
-    
-    <body>
-    <div class="top-bar">
-        <span style="padding-top: 60px;">Civil<sub>center</sub></span>
-        <button id="login" style="margin-left: 75%;">Login</button>
-        <button id="signup">Sign Up</button>
-    </div>
-    
-    <script>
-    document.getElementById("login").addEventListener("click", function() {
-        window.location.href = window.location.origin + "/login";
-    });
-    
-    document.getElementById("signup").addEventListener("click", function() {
-        window.location.href = window.location.origin + "/signup";
-    });
-    </script>
-    
-    <!-- spacer so content below bar isn't hidden -->
-    <div style="height: 150px;"></div>
-    
-    </body>
-    </html>
-    """, height=180, scrolling=False)
-    
+    """, unsafe_allow_html=True)
+
     # === HTML Layout ===
     st.markdown("""
     <div class="top-bar">
