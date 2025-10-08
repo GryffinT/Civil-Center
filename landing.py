@@ -15,82 +15,103 @@ def landing_page():
         return img
     st.set_page_config(page_title="Civil Center", page_icon=":guardsman:", layout="wide")
 
-
-    # Background rectangles
-    def make_fullwidth_rectangle(height, color="#ffffff"):
-        st.markdown(
-            f"""
-            <div style="
-                width: 100vw;              /* full viewport width */
-                margin-left: calc(-50vw + 50%);
-                height: {height}px;
-                background-color: {color};
-            "><p></div>
-            """,
-            unsafe_allow_html=True
-        )
-
-
     # CSS to create frosted glass effect top bar
-    st.html("""
+
+    st.markdown("""
     <style>
     .css-18e3th9 {
         padding: 0 !important;
         margin: 0 !important;
     }
-
+    
     body {
         margin: 0;
     }
-
+    
     /* Full-width frosted top bar */
     .top-bar {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;          
-        height: 150px;          /* taller bar */
+        width: 100vw;
+        height: 150px;
         display: flex;
-        align-items: center;     /* vertical center */
+        align-items: center;
         padding-left: 30px;
         z-index: 9999;
-
-        /* Frosted glass effect */
-        background: rgba(220, 219, 218, 0.5); 
-        backdrop-filter: blur(10px);           
-        -webkit-backdrop-filter: blur(10px);  
+    
+        background: rgba(220, 219, 218, 0.5);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-
+    
     /* Text inside the bar */
     .top-bar span {
         font-size: 50px;
         font-weight: bold;
         color: black;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-        background: transparent !important;  /* ensure no background */
+        background: transparent !important;
     }
-
-    /* Make Streamlit text_input and markdown boxes transparent over top bar */
+    
+    /* Buttons */
+    .top-bar button {
+        margin-top: 60px;
+        margin-right: 30px;
+        padding: 10px 20px;
+        font-size: 20px;
+        background-color: #000;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    
+    .top-bar button:hover {
+        background-color: #333;
+    }
+    
+    /* Transparent Streamlit boxes */
     [data-testid="stTextInput"] > div:first-child, 
     [data-testid="stTextArea"] > div:first-child,
-    .css-1adrfps {  /* general container class for text boxes */
+    .css-1adrfps {
         background-color: transparent !important;
         box-shadow: none !important;
     }
-    """)
-
-    # Render the frosted top bar with text
-    st.html("""
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # === HTML Layout ===
+    st.markdown("""
     <div class="top-bar">
-        <span style="padding-top: 60px; background: transparent;">Civil<sub>center</sub></span>
-        <button style="margin-left: 75%; margin-top: 60px; margin-right: 30px; padding: 10px 20px; font-size: 20px; background-color: #000; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="window.location.href='/login'";>Login</button>
-        <button style="margin-left: auto; margin-top: 60px; margin-right: 30px; padding: 10px 20px; font-size: 20px; background-color: #000; color: white; border: none; border-radius: 5px; cursor: pointer;" onclick="window.location.href='/signup'";>Sign Up</button>
+        <span style="padding-top: 60px;">Civil<sub>center</sub></span>
+        <button id="login-btn" style="margin-left: 75%;">Login</button>
+        <button id="signup-btn">Sign Up</button>
     </div>
-    """)
-
-    # Spacer so content isn't hidden under fixed bar
-    st.html("<div style='height: 150px;'></div>")
+    <div style="height: 150px;"></div>
+    """, unsafe_allow_html=True)
+    
+    # === JavaScript bindings ===
+    components.html("""
+    <script>
+    const login = document.getElementById("login-btn");
+    const signup = document.getElementById("signup-btn");
+    
+    if (login) {
+        login.addEventListener("click", () => {
+            window.location.href = window.location.origin + "/login";
+        });
+    }
+    
+    if (signup) {
+        signup.addEventListener("click", () => {
+            window.location.href = window.location.origin + "/signup";
+        });
+    }
+    </script>
+    """, height=0)
 
     # Actually start putting content down here!!!
 
