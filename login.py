@@ -5,7 +5,7 @@ if "page" not in st.session_state:
     st.session_state.page = 1
 
 def login_page(): 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3 = st.columns([2,2,2])
     
     with col1:
         pass
