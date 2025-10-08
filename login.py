@@ -1,15 +1,16 @@
 import streamlit as st
 from streamlit_javascript import st_javascript
 
+if "page" not in st.sesion_state:
+    st.session_state.page = 1
+
 def login_page(): 
-    st.subheader("Javascript API call")
-    st.button("test")
-    if st.button:
-        return_val =st_javascript("""function(response) { return (True)}""")
-    
-    return_value = st_javascript("""await fetch("https://reqres.in/api/products/3").then(function(response) {
-        return response.json();
-    }) """)
-    
-    st.markdown(f"Return value was: {return_value}")
-    print(f"Return value was: {return_value}")
+    with st.form("my_form"):
+        tab1, tab2 = st.tabs(["Cat", "Dog"])
+        
+        with tab1:
+            st.header("Login")
+        with tab2:
+            st.header("Signup")
+    if submitted:
+        st.session_state.page = 0
