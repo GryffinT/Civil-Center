@@ -15,16 +15,16 @@ def login_page():
             with tab1:
                 login_username = ""
                 st.header("Login")
-                st.header("")
+                st.write("")
                 login_username = st.text_input(key="lu", label="Username")
-                st.header("")
+                st.write("")
                 st.text_input(key="lp", label="Password")
             with tab2:
                 signup_username = ""
                 st.header("Signup")
-                st.header("")
+                st.write("")
                 signup_username = st.text_input(key="su", label="Username")
-                st.header("")
+                st.write("")
                 st.text_input(key="sp", label="Password")
             submitted = st.form_submit_button(key="register", label="Submit")
         if submitted:
