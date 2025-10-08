@@ -94,7 +94,7 @@ def landing_page():
 
     col1, col2, col3 = st.columns([5,.5,5])
     with col3:
-        st.image(round_image(f"{BASE_DIR}/Media/landingpage/landingimage1.jpg", 20, 900, 600), caption="Jose Manuel Romualdez and Dan Sullivan event - August 3rd 2019")
+        st.image(round_image(f"{BASE_DIR}/Media/landingpage/LandingImage1.jpg", 20, 900, 600), caption="Jose Manuel Romualdez and Dan Sullivan event - August 3rd 2019")
     with col1:
         st.html("""
         <div style="text-align: justify;">
