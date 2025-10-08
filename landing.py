@@ -118,7 +118,7 @@ def landing_page():
                <p style="font-size: 30px; color: #000;">Don't fall to the sidelines, <strong>your voice matters</strong>, so make it heard.</p>
         </div>
                 """)
-        st.button(r"$\footnotesize\text{Leads}\\\Large12$")
+        st.button(r"$\footnotesize\text{Join the Civil Center Community}$")
 
 
     container = st.container()
