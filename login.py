@@ -17,13 +17,7 @@ def login_page():
             st.header("Signup")
             signup_username = st.text_input(key="su", label="Username")
             st.text_input(key="sp", label="Password")
-        if signup_username:
-            string = signup
-        elif login_username:
-            string = login
-        else:
-            string = "Submit"
-        submitted = st.form_submit_button(key="register", label=string)
+        submitted = st.form_submit_button(key="register", label="Submit")
     if submitted:
         st.session_state.page = 0
         st.rerun()
