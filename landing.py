@@ -86,7 +86,6 @@ def landing_page():
     """)
 
     # === HTML Layout ===
-    st.button("Hello")
     st.markdown("""
     <div class="top-bar">
         <span style="padding-top: 60px;">Civil<sub>center</sub></span>
@@ -97,6 +96,7 @@ def landing_page():
     """, unsafe_allow_html=True)
     
     # === JavaScript bindings ===
+    st.button("Hello")
     components.html("""
     <script>
     const login = document.getElementById("login-btn");
