@@ -150,7 +150,7 @@ def landing_page():
 
             <!-- Left small rectangle -->
             <div class="small-rect" style="text-align: left;">
-                <img src="data:image/gif;base64,{b64}" style="width:100px; height:100px;" />
+                <img src="./Media/landingpage/seminar.gif" style="width:100px; height:100px;" />
                 <p style="color: #666;">Voice your ideas</p>
             </div>
 
