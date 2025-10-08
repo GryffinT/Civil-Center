@@ -19,12 +19,11 @@ def landing_page():
 
     # CSS to create frosted glass effect top bar
 
-    # === Top-bar HTML and CSS ===
+    # === Top-bar HTML + CSS (has a slot where we'll place Streamlit button wrappers) ===
     st.markdown(
         """
         <style>
         body { margin: 0; }
-    
         .top-bar {
           position: fixed;
           top: 0;
@@ -34,14 +33,13 @@ def landing_page():
           display: flex;
           align-items: center;
           padding: 0 24px;
+          gap: 12px;
           z-index: 9999;
           background: rgba(220,219,218,0.55);
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
           box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-          gap: 12px;
         }
-    
         .top-bar .title {
           font-size: 44px;
           font-weight: 700;
@@ -53,16 +51,14 @@ def landing_page():
           align-items: flex-end;
         }
         .top-bar .title sub { font-size: 14px; margin-left: 6px; align-self: flex-end; }
-    
-        /* The placeholder container inside the top-bar where we'll place Streamlit widget nodes */
         #topbar-widget-slot {
-          display: flex;
-          gap: 12px;
-          align-items: center;
-          height: 100%;
+          display:flex;
+          gap:12px;
+          align-items:center;
+          height:100%;
+          margin-left:12px;
         }
-    
-        /* Make sure moved Streamlit wrappers look good on the bar */
+        /* style for moved Streamlit button wrappers */
         #topbar-widget-slot div[data-testid="stButton"] > button {
           background: #000;
           color: #fff;
@@ -73,13 +69,11 @@ def landing_page():
           cursor: pointer;
         }
         #topbar-widget-slot div[data-testid="stButton"] > button:hover { background: #333; }
-    
         .topbar-spacer { height: 140px; }
-    
         @media (max-width:600px){
-          .top-bar { height: 110px; padding: 0 12px; }
-          .top-bar .title { font-size: 28px; padding-top: 10px; }
-          .topbar-spacer { height: 110px; }
+          .top-bar { height:110px; padding:0 12px; }
+          .top-bar .title { font-size:28px; padding-top:10px; }
+          .topbar-spacer { height:110px; }
         }
         </style>
     
@@ -93,89 +87,75 @@ def landing_page():
         unsafe_allow_html=True,
     )
     
-    # === Create two placeholders and render Streamlit buttons into them ===
-    # We intentionally create these buttons in the normal Streamlit flow so Python receives clicks.
-    login_slot = st.empty()
-    signup_slot = st.empty()
+    # === Create Streamlit buttons in normal flow so Python gets clicks ===
+    login_placeholder = st.empty()
+    signup_placeholder = st.empty()
     
-    with login_slot:
+    with login_placeholder:
         login_clicked = st.button("Login")
     
-    with signup_slot:
+    with signup_placeholder:
         signup_clicked = st.button("Signup")
     
     if login_clicked:
         st.success("Login clicked (handled in Python)")
-    
     if signup_clicked:
         st.success("Signup clicked (handled in Python)")
     
-    # Small delay to increase chance that Streamlit has flushed the widget DOM before JS runs
-    time.sleep(0.02)
-    
-    # === JS: move the exact button wrappers into the top-bar slot (nested INSIDE the frosted div) ===
-    # This script finds the button wrappers for the specific labels "Login" and "Signup"
-    # and appends their wrapper nodes into #topbar-widget-slot so they are truly nested.
+    # === Robust JS: MutationObserver to wait for Streamlit button wrappers and move the exact wrappers into the slot ===
+    # This reliably nests the Streamlit DOM nodes INSIDE the frosted top-bar div.
     st.markdown(
         """
         <script>
-        (function () {
-          const MAX_TRIES = 80;
-          let tries = 0;
+        (function() {
+          const slot = document.getElementById('topbar-widget-slot');
+          if (!slot) return;
     
-          function moveSpecificButtons() {
-            tries += 1;
-            const slot = document.getElementById("topbar-widget-slot");
-            if (!slot) {
-              if (tries < MAX_TRIES) requestAnimationFrame(moveSpecificButtons);
-              return;
-            }
-    
-            // Find all Streamlit button wrappers
+          // Helper: find wrapper by visible button text
+          function findWrapper(label) {
             const wrappers = Array.from(document.querySelectorAll('div[data-testid="stButton"]'));
-    
-            if (wrappers.length === 0) {
-              if (tries < MAX_TRIES) requestAnimationFrame(moveSpecificButtons);
-              return;
-            }
-    
-            // Helper to find a wrapper whose inner button text equals label
-            function findWrapperByLabel(label) {
-              return wrappers.find(w => {
-                const btn = w.querySelector("button");
-                return btn && btn.innerText && btn.innerText.trim() === label;
-              }) || null;
-            }
-    
-            const loginWrapper = findWrapperByLabel("Login");
-            const signupWrapper = findWrapperByLabel("Signup");
-    
-            // Only move if we found the wrappers
-            if (loginWrapper && !slot.contains(loginWrapper)) slot.appendChild(loginWrapper);
-            if (signupWrapper && !slot.contains(signupWrapper)) slot.appendChild(signupWrapper);
-    
-            // If both moved, stop; otherwise retry a few more times for slow rendering
-            if ((loginWrapper && slot.contains(loginWrapper)) && (signupWrapper && slot.contains(signupWrapper))) {
-              // ensure the slot height matches the top-bar
-              const topBar = document.getElementById("top-bar");
-              if (topBar) slot.style.height = topBar.clientHeight + "px";
-              return;
-            }
-    
-            if (tries < MAX_TRIES) requestAnimationFrame(moveSpecificButtons);
+            return wrappers.find(w => {
+              const btn = w.querySelector('button');
+              return btn && btn.innerText && btn.innerText.trim() === label;
+            }) || null;
           }
     
-          requestAnimationFrame(moveSpecificButtons);
-          setTimeout(moveSpecificButtons, 150);
-          setTimeout(moveSpecificButtons, 600);
-          setTimeout(moveSpecificButtons, 1200);
+          // Try immediate move if available
+          function tryMove() {
+            const login = findWrapper('Login');
+            const signup = findWrapper('Signup');
+            let moved = false;
+            if (login && !slot.contains(login)) { slot.appendChild(login); moved = true; }
+            if (signup && !slot.contains(signup)) { slot.appendChild(signup); moved = true; }
+            // adjust slot height to match top bar
+            const topBar = document.getElementById('top-bar');
+            if (topBar) slot.style.height = topBar.clientHeight + 'px';
+            return moved && login && signup;
+          }
+    
+          if (tryMove()) return;
+    
+          // If buttons are not yet rendered, observe DOM for changes and move when they appear
+          const observer = new MutationObserver((mutations, obs) => {
+            if (tryMove()) {
+              obs.disconnect();
+            }
+          });
+    
+          observer.observe(document.body, { childList: true, subtree: true });
+    
+          // Fallback: periodic attempts for a short duration
+          let attempts = 0;
+          const interval = setInterval(() => {
+            attempts += 1;
+            if (tryMove() || attempts > 60) clearInterval(interval);
+          }, 100);
         })();
         </script>
         """,
         unsafe_allow_html=True,
     )
-    
-    # === Rest of the page content ===
+
 
     col1, col2, col3 = st.columns([5,.5,5])
     with col3:
