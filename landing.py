@@ -101,7 +101,7 @@ def landing_page():
         st.image(round_image(f"{BASE_DIR}/Media/landingpage/LandingImage1.jpg", 20, 900, 600), caption="Jose Manuel Romualdez and Dan Sullivan event - August 3rd 2019")
     with col1:
         st.html("""
-        <div style="text-align: justify;">
+        <div style="text-align: left;">
                 <h1 style="font-size: 70px; color: #000;">
                     Because 
                     <span style="
