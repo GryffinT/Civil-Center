@@ -234,29 +234,6 @@ def my_centers_page():
                                 <p style="background-color: #f0f0f0; border-radius: 5px; padding: 10px;">Description: {center.get('description', 'No description provided.')}</p>
                             </div>
                         """)
-
-                    html("""
-                    <style>
-                    div[data-testid="stButton"] > button {
-                    background-color: black;
-                    color: white;
-                    border: none;
-                    border-radius: 8px;
-                    padding: 14px 28px;
-                    font-size: 18px;
-                    cursor: pointer;
-                    transition: 0.25s;
-                    }
-                    div[data-testid="stButton"] > button:hover {
-                    background-color: #333;
-                    transform: scale(1.05);
-                    }
-                    </style>
-                    """)
-
-                    if st.button("Black Button"):
-                        st.success("Streamlit button clicked!")
-
                     if st.button("Go to Center", key=f"go_{cid_str}", use_container_width=True, type="tertiary"):
                         st.session_state.active_center = cid
                         st.session_state.page = 3
