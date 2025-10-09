@@ -36,6 +36,7 @@ def login_page():
                             if bcrypt.checkpw(login_password.encode('utf-8'), hashed_password.encode('utf-8')):
                                 st.success("Login successful!")
                                 st.session_state.username = login_username
+                                st.session_state.password = login_password
                                 st.session_state.page = 2
                                 st.rerun()
                             else:
