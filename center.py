@@ -100,12 +100,14 @@ def center_page(center_id):
                     st.rerun()
                 else:
                     st.warning("You are not a member of this center.")
+            @st.dialog("Whats on your mind?")
+            def make_post():
+                st.text_input("Title")
+                st.toggle("Post anonymously")
+                st.text_area("Content")
+                st.button("Post")
             if post:
-                @st.dialog("Whats on your mind?")
-                def make_post():
-                    st.text_input("Title")
-                    st.toggle("Post anonymously")
-                    st.text_area("Content")
-                    st.button("Post")
+                make_post()
+ 
                     
 
