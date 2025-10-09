@@ -1,6 +1,8 @@
 import streamlit as st
 import bcrypt
 from supabase import create_client, Client
+import random
+import string
 import json
 
 def my_centers_page():
@@ -64,12 +66,20 @@ def my_centers_page():
         new_center_password = st.text_input("Set a password for your new center", key="new_center_pw")
         new_center_name = st.text_input("Name your center (required)", key="new_center_name")
         submitted = st.form_submit_button("Create Center")
+
         if submitted:
             if not new_center_password or not new_center_name:
                 st.error("Please provide both a name and password for the new center.")
             else:
+                # Generate random 16-character ID
+                new_center_id = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+
+                # Hash the center password
                 hashed_pw = bcrypt.hashpw(new_center_password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+                # Insert new center with custom ID
                 create_resp = supabase.table("centers").insert({
+                    "id": new_center_id,
                     "name": new_center_name,
                     "password": hashed_pw,
                     "admins": [st.session_state.username],
@@ -77,8 +87,6 @@ def my_centers_page():
                 }).execute()
 
                 if create_resp.data and len(create_resp.data) > 0:
-                    new_center_id = create_resp.data[0]["id"]
-
                     # Ensure user_center_ids is a list
                     if isinstance(user_center_ids, list):
                         centers_list = user_center_ids
@@ -92,10 +100,10 @@ def my_centers_page():
                     else:
                         centers_list = []
 
-                    # Append new center
+                    # Append new center ID
                     centers_list.append(new_center_id)
 
-                    # Update user record
+                    # Update user's center_ids
                     update_resp = supabase.table("users").update({"center_ids": centers_list}).eq("username", st.session_state.username).execute()
                     if update_resp.data:
                         st.success(f"Center '{new_center_name}' created with ID: {new_center_id} and joined successfully!")
