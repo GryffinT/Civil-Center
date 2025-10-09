@@ -115,29 +115,31 @@ def my_centers_page():
     # -------- Display User Centers --------
     st.header("Your Centers")
 
-    # Ensure user_center_ids is a list
-    if isinstance(user_center_ids, list):
-        centers_list = user_center_ids
-    elif isinstance(user_center_ids, str):
+    # Convert user_center_ids from JSON string to Python list
+    if isinstance(user_center_ids, str):
         try:
             centers_list = json.loads(user_center_ids)
             if not isinstance(centers_list, list):
                 centers_list = [centers_list]
         except json.JSONDecodeError:
-            centers_list = [user_center_ids] if user_center_ids else []
+            centers_list = []
+    elif isinstance(user_center_ids, list):
+        centers_list = user_center_ids
     else:
         centers_list = []
 
-    # Build a dict for fast lookup of centers by ID
+    # Build a dictionary for fast lookup of centers by ID
     centers_dict = {c["id"]: c for c in centers}
 
     if centers_list:
         for cid in centers_list:
-            center = centers_dict.get(cid)
+            # Ensure each cid is a string and stripped
+            cid_str = str(cid).strip()
+            center = centers_dict.get(cid_str)
             if center:
-                st.write(f"- {center['name']} (ID: {cid})")
+                st.write(f"- {center['name']} (ID: {cid_str})")
             else:
-                st.write(f"- Center ID: {cid} (not found or deleted)")
+                st.write(f"- Center ID: {cid_str} (not found or deleted)")
     else:
         st.write("You haven’t joined any centers yet.")
 
