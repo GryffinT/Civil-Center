@@ -10,6 +10,7 @@ def center_page(center_id):
     
     # Fetch center details
     center_resp = supabase.table("centers").select("*").eq("id", center_id).execute()
+    users_resp = supabase.table("users").select("*").eq("username", st.session_state.username).execute()
     if not center_resp.data or len(center_resp.data) == 0:
         st.error("Center not found.")
         return
@@ -55,8 +56,16 @@ def center_page(center_id):
             st.write("")
             post = st.button("Make post", use_container_width=True)
             if leave:
+                user_data = users_resp.data[0]  # assuming usernames are unique
+                center_ids = user_data.get("center_ids", [])
+
+                # Remove the center ID if it exists
+                center_id_to_remove = center.get("id")
+                if center_id_to_remove in center_ids:
+                    center_ids.remove(center_id_to_remove)
+
+                # Update the user's row with the new list
+                supabase.table("users").update({"center_ids": center_ids}).eq("username", st.session_state.username).execute()
                 st.session_state.page = 2
                 st.rerun()
-
-
     # Additional center functionalities can be added here
