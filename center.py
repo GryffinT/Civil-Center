@@ -105,7 +105,8 @@ def center_page(center_id):
                 st.text_input("Title")
                 st.toggle("Post anonymously")
                 st.text_area("Content")
-                st.button("Post")
+                if st.button("Post"):
+                    st.write("Hello")
             if post:
                 make_post()
  
