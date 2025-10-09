@@ -30,6 +30,7 @@ if st.session_state.page == 0 or page == "Home":
 elif st.session_state.page == 1:
     scroll_to_top()
     login_page()
+    scroll_to_top()
 elif st.session_state.page == 2 or page == "My Centers":
     st.session_state.page = 2
     scroll_to_top()
