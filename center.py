@@ -1,7 +1,7 @@
 import streamlit as st
 from supabase import create_client, Client
 import bcrypt
-
+import ast
 
 def center_page(center_id):
     url = st.secrets["supabase"]["url"]
@@ -57,15 +57,21 @@ def center_page(center_id):
             post = st.button("Make post", use_container_width=True)
             if leave:
                 user_data = users_resp.data[0]  # assuming usernames are unique
-                center_ids = user_data.get("center_ids", [])
+                center_ids_str = user_data.get("center_ids", "[]")  # default to empty list string
+
+                # Convert string to a Python list
+                center_ids = ast.literal_eval(center_ids_str)  # safely converts '["id1","id2"]' to ["id1", "id2"]
 
                 # Remove the center ID if it exists
                 center_id_to_remove = center.get("id")
                 if center_id_to_remove in center_ids:
                     center_ids.remove(center_id_to_remove)
 
-                # Update the user's row with the new list
-                supabase.table("users").update({"center_ids": center_ids}).eq("username", st.session_state.username).execute()
+                # Convert list back to string for storage
+                new_center_ids_str = str(center_ids)
+
+                # Update the user's row
+                supabase.table("users").update({"center_ids": new_center_ids_str}).eq("username", st.session_state.username).execute()
                 st.session_state.page = 2
                 st.rerun()
     # Additional center functionalities can be added here
