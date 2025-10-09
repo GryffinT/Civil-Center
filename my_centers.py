@@ -12,7 +12,7 @@ def my_centers_page():
     if user_resp.data is not None and len(user_resp.data) > 0:
         user_center_ids = user_resp.data[0].get("center_ids") or []
     else:
-        st.error(f"User not found. Please log in again. {st.session_state.password}")
+        st.error(f"User not found. Please log in again. {user_resp.data}")
         return
 
     center_terminal = st.container()
