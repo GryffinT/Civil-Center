@@ -12,7 +12,7 @@ if "active_center" not in st.session_state:
 
 if st.session_state.page == 0:
   # Reuse the same component path
-  black_button = declare_component("black_button", path="components/black_button/index")
+  black_button = declare_component("black_button", path="components/black_button/index.html")
 
   clicked = black_button(default=False, key="other_page_button")
 
