@@ -1,6 +1,7 @@
 from landing import landing_page
 import streamlit as st
 from login import login_page
+from my_centers import my_centers_page
 
 if "page" not in st.session_state:
   st.session_state.page = 0
@@ -10,4 +11,4 @@ if st.session_state.page == 0:
 elif st.session_state.page == 1:
   login_page()
 elif st.session_state.page == 2:
-  st.write(f"Welcome, {st.session_state.username}!")
+  my_centers_page()
