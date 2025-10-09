@@ -3,6 +3,9 @@ from supabase import create_client, Client
 import bcrypt
 
 def center_page(center_id):
+    url = st.secrets["supabase"]["url"]
+    key = st.secrets["supabase"]["key"]
+    supabase: Client = create_client(url, key)
     # CSS to create frosted glass effect top bar
 
     # === Styles ===
@@ -80,9 +83,6 @@ def center_page(center_id):
     <div style="height: 150px;"></div>
     """, unsafe_allow_html=True)
     # === End Styles ===
-    url = st.secrets["supabase"]["url"]
-    key = st.secrets["supabase"]["key"]
-    supabase: Client = create_client(url, key)
 
     # Fetch center details
     center_resp = supabase.table("centers").select("*").eq("id", center_id).execute()
