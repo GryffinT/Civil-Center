@@ -141,6 +141,7 @@ def my_centers_page():
                         <div>
                             <h1>{center['name']}</h1>
                             <p>ID: {cid_str}</p>
+                            <p>{st.button("Join Center", key=f"join_{cid_str}")}</p>
                         </div>
                         """)
             else:
