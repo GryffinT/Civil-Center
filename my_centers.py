@@ -143,7 +143,7 @@ def my_centers_page():
                     st.html(f"""
                             <div>
                                 <h1>{center['name']}</h1>
-                                <p style="background-color: #f0f0f0;">Description: {center.get('description', 'No description provided.')}</p>
+                                <p style="background-color: #f0f0f0; border-radius: 5px;">Description: {center.get('description', 'No description provided.')}</p>
                             </div>
                         """)
                     st.button("Go to Center", key=f"go_{cid_str}")
