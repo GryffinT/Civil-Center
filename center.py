@@ -38,7 +38,7 @@ def center_page(center_id):
                         <p>{center.get('members')} members</p>
                     </div>
                     """)
-    col1, col2 = st.columns([8,2])
+    col1, col2 = st.columns([8.5,1.5])
     with col1:
         pass
     with col2:
