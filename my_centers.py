@@ -127,13 +127,33 @@ def my_centers_page():
                     None
                 )
                 if center_to_join:
+                    # Ensure user_center_ids is a Python list
+                    if isinstance(user_center_ids, str):
+                        try:
+                            user_center_ids = ast.literal_eval(user_center_ids)
+                            if not isinstance(user_center_ids, list):
+                                user_center_ids = [user_center_ids]
+                        except (ValueError, SyntaxError):
+                            user_center_ids = []
+                    elif not isinstance(user_center_ids, list):
+                        user_center_ids = []
+
+                    # Add center ID if not already in the list
                     if center_to_join["id"] not in user_center_ids:
                         user_center_ids.append(center_to_join["id"])
-                        update_resp = supabase.table("users").update({"center_ids": user_center_ids}).eq("username", st.session_state.username).execute()
+
+                        # Convert back to string for storage
+                        updated_center_ids_str = str(user_center_ids)
+
+                        # Update user's center_ids in Supabase
+                        update_resp = supabase.table("users").update({"center_ids": updated_center_ids_str}).eq("username", st.session_state.username).execute()
+
+                        # Increment the members count in the center
                         update_members = supabase.rpc(
-                            "increment_members",  # Name of your Postgres function
-                            {"center_id": center_to_join["id"]}  # Pass any parameters if needed
+                            "increment_members",
+                            {"center_id": center_to_join["id"]}
                         ).execute()
+
                         if update_resp.data:
                             st.success(f"Successfully joined center with ID: {center_to_join['id']}")
                             st.rerun()
