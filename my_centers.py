@@ -233,27 +233,10 @@ def my_centers_page():
                                 <p style="background-color: #f0f0f0; border-radius: 5px; padding: 10px;">Description: {center.get('description', 'No description provided.')}</p>
                             </div>
                         """)
-                    button_key = f"go_{cid_str}"
-                    st.markdown(f"""
-                        <style>
-                        div[data-testid="stButton"][data-baseweb="button"][key="{button_key}"] button {{
-                            background-color: #000000;
-                            color: white;
-                            border-radius: 8px;
-                            width: 100%;
-                            font-size: 16px;
-                            padding: 20px 0;
-                        }}
-                        </style>
-                    """, unsafe_allow_html=True)
-
-                    if st.button("Go to Center", key=button_key, use_container_width=True):
-                        st.write("Button clicked!")
-
-                    #if st.button("Go to Center", key=f"go_{cid_str}", color="#000000", use_container_width=True):
-                     #   st.session_state.active_center = cid
-                     #   st.session_state.page = 3
-                      #  st.rerun()
+                    if st.button("Go to Center", key=f"go_{cid_str}", color="#000000", use_container_width=True):
+                        st.session_state.active_center = cid
+                        st.session_state.page = 3
+                        st.rerun()
 
             else:
                 st.write(f"- Center ID: {cid_str} (not found or deleted)")
