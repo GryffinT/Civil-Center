@@ -23,5 +23,9 @@ def center_page(center_id):
             st.html("""
                     <img src="https://i.postimg.cc/Y94ZzCy8/mentorship.gif"></img>
                     """)
+        with col2:
+            st.html(f"""
+                    <h1>Center: {center.get('name', 'Unnamed Center')}</h1>
+                    """)
 
     # Additional center functionalities can be added here
