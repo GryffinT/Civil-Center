@@ -22,7 +22,7 @@ def my_centers_page():
                             if center_to_join["id"] not in user_center_ids:
                                 user_center_ids.append(center_to_join["id"])
                                 update_resp = supabase.table("users").update({"center_ids": user_center_ids}).eq("password", st.session_state.password).execute()
-                                if update_resp.status_code == 200:
+                                if update_resp.error is None:
                                     st.success(f"Successfully joined center with ID: {center_to_join['id']}")
                                 else:
                                     st.error("Failed to join center. Please try again.")
