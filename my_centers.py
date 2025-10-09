@@ -150,7 +150,7 @@ def my_centers_page():
                 <div class="center-card">
                     <p>- {center['name']} (ID: {cid_str})</p>
                 </div>
-                """, unsafe_allow_html=True)
+                """)
             else:
                 st.write(f"- Center ID: {cid_str} (not found or deleted)")
     else:
