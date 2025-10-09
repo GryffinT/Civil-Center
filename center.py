@@ -60,18 +60,43 @@ def center_page(center_id):
                 center_ids_str = user_data.get("center_ids", "[]")  # default to empty list string
 
                 # Convert string to a Python list
-                center_ids = ast.literal_eval(center_ids_str)  # safely converts '["id1","id2"]' to ["id1", "id2"]
+                try:
+                    center_ids = ast.literal_eval(center_ids_str)
+                    if not isinstance(center_ids, list):
+                        center_ids = []
+                except (ValueError, SyntaxError):
+                    center_ids = []
 
                 # Remove the center ID if it exists
                 center_id_to_remove = center.get("id")
                 if center_id_to_remove in center_ids:
                     center_ids.remove(center_id_to_remove)
 
-                # Convert list back to string for storage
-                new_center_ids_str = str(center_ids)
+                    # Convert list back to string for storage
+                    new_center_ids_str = str(center_ids)
 
-                # Update the user's row
-                supabase.table("users").update({"center_ids": new_center_ids_str}).eq("username", st.session_state.username).execute()
-                st.session_state.page = 2
-                st.rerun()
-    # Additional center functionalities can be added here
+                    # Update the user's record in Supabase
+                    supabase.table("users").update({"center_ids": new_center_ids_str}).eq(
+                        "username", st.session_state.username
+                    ).execute()
+
+                    # Decrement the member count in the centers table
+                    center_resp = supabase.table("centers").select("members").eq("id", center_id_to_remove).execute()
+
+                    if center_resp.data and len(center_resp.data) > 0:
+                        current_members = center_resp.data[0].get("members", 1)
+                        new_member_count = max(current_members - 1, 0)
+
+                        if new_member_count == 0:
+                            # Delete the center entirely
+                            supabase.table("centers").delete().eq("id", center_id_to_remove).execute()
+                            st.info(f"The center '{center.get('name', center_id_to_remove)}' has been deleted (no remaining members).")
+                        else:
+                            # Update the member count
+                            supabase.table("centers").update({"members": new_member_count}).eq("id", center_id_to_remove).execute()
+
+                    st.success(f"You have left the center '{center.get('name', center_id_to_remove)}'.")
+                    st.session_state.page = 2
+                    st.rerun()
+                else:
+                    st.warning("You are not a member of this center.")
