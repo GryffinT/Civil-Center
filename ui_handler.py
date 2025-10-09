@@ -14,6 +14,5 @@ elif st.session_state.page == 1:
   login_page()
 elif st.session_state.page == 2:
   my_centers_page()
-elif st.session_state.active_center != None:
-  st.session_state.page = 3
+elif st.session_state.page == 3:
   st.write(f"Active Center ID: {st.session_state.active_center}")
