@@ -6,9 +6,6 @@ from center import center_page
 from streamlit.components.v1 import declare_component
 from streamlit.components.v1 import html
 from pathlib import Path
-from components.black_button import black_button
-
-
 
 if "page" not in st.session_state:
   st.session_state.page = 0
@@ -22,10 +19,4 @@ elif st.session_state.page == 1:
 elif st.session_state.page == 2:
   my_centers_page()
 elif st.session_state.page == 3:
-  clicked = black_button(default=False, key="my_black_button")
-
-  if clicked:
-      st.success("Button clicked!")
-  else:
-      st.write("Waiting for click...")
   center_page(st.session_state.active_center)
