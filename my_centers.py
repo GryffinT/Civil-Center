@@ -5,6 +5,7 @@ from supabase import create_client, Client
 import random
 import string
 import json
+import ast
 
 def my_centers_page():
       # CSS to create frosted glass effect top bar
@@ -195,15 +196,20 @@ def my_centers_page():
                         centers_list = []
 
                     # Append new center ID
-                    centers_list.append(new_center_id)
+                    if new_center_id not in centers_list:
+                        centers_list.append(new_center_id)
 
-                    # Update user's center_ids
-                    update_resp = supabase.table("users").update({"center_ids": centers_list}).eq("username", st.session_state.username).execute()
+                    # Convert list back to string for storage
+                    new_center_ids_str = str(centers_list)
+
+                    # Update user's center_ids in Supabase
+                    update_resp = supabase.table("users").update({"center_ids": new_center_ids_str}).eq("username", st.session_state.username).execute()
+
                     if update_resp.data:
-                        st.success(f"Center '{new_center_name}' created with ID: {new_center_id} and joined successfully!")
+                        st.success(f"Successfully created and joined center '{new_center_name}' with ID: {new_center_id}")
                         st.rerun()
                     else:
-                        st.error("Failed to join the newly created center. Please try again.")
+                        st.error("Failed to update your profile with the new center. Please try again.")
                 else:
                     st.error("Failed to create center. Please try again.")
 
