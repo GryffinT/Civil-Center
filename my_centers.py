@@ -70,7 +70,7 @@ def my_centers_page():
 
         if submitted:
             password_check = supabase.table("centers").select("*").eq("password", new_center_password).execute()
-            if password_check.data and len(password_check.data) > 0:
+            if password_check.data == new_center_password and len(password_check.data) > 0:
                 st.error("This password is already in use. Please choose a different password.")
             elif not new_center_password or not new_center_name:
                 st.error("Please provide both a name and password for the new center.")
