@@ -9,3 +9,5 @@ if st.session_state.page == 0:
   landing_page()
 elif st.session_state.page == 1:
   login_page()
+elif st.session_state.page == 2:
+  st.write(f"Welcome, {st.session_state.username}!")
