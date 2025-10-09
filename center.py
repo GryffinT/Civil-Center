@@ -21,7 +21,7 @@ def center_page(center_id):
 
         with col1:
             st.html("""
-                    <img src="https://i.postimg.cc/Y94ZzCy8/mentorship.gif"></img>
+                    <img style="wdith: 40px; height=40px;" src="https://i.postimg.cc/Y94ZzCy8/mentorship.gif"></img>
                     """)
         with col2:
             st.html(f"""
