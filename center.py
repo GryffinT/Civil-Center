@@ -69,72 +69,77 @@ def center_page(center_id):
 
     # ---------- Right-Side Controls ----------
     with col_controls:
-        st.html("""
-            <div>
-                <h2>Center Controls</h2>
-                <p style="overflow-wrap: break-word;">Manage your presence in this center here</p>
-            </div>
-        """)
+        # Wrap controls in a bordered container
+        with st.container(border=True):
+            st.html("""
+                <div>
+                    <h2 style="margin-bottom: 0;">Center Controls</h2>
+                    <p style="overflow-wrap: break-word; margin-top: 5px;">
+                        Manage your presence in this center here.
+                    </p>
+                </div>
+            """)
 
-        leave = st.button("Leave Center", use_container_width=True)
-        post_btn = st.button("Make Post", use_container_width=True)
+            # Buttons for leave and post
+            leave = st.button("Leave Center", use_container_width=True)
+            post_btn = st.button("Make Post", use_container_width=True)
 
-        # Handle leaving
-        if leave:
-            user_data = users_resp.data[0]
-            center_ids_str = user_data.get("center_ids", "[]")
+            # Handle leaving
+            if leave:
+                user_data = users_resp.data[0]
+                center_ids_str = user_data.get("center_ids", "[]")
 
-            try:
-                center_ids = ast.literal_eval(center_ids_str)
-                if not isinstance(center_ids, list):
+                try:
+                    center_ids = ast.literal_eval(center_ids_str)
+                    if not isinstance(center_ids, list):
+                        center_ids = []
+                except (ValueError, SyntaxError):
                     center_ids = []
-            except (ValueError, SyntaxError):
-                center_ids = []
 
-            center_id_to_remove = center.get("id")
-            if center_id_to_remove in center_ids:
-                center_ids.remove(center_id_to_remove)
-                new_center_ids_str = str(center_ids)
+                center_id_to_remove = center.get("id")
+                if center_id_to_remove in center_ids:
+                    center_ids.remove(center_id_to_remove)
+                    new_center_ids_str = str(center_ids)
 
-                supabase.table("users").update({"center_ids": new_center_ids_str}).eq(
-                    "username", st.session_state.username
-                ).execute()
+                    supabase.table("users").update({"center_ids": new_center_ids_str}).eq(
+                        "username", st.session_state.username
+                    ).execute()
 
-                # Update or delete the center
-                center_resp = supabase.table("centers").select("members").eq("id", center_id_to_remove).execute()
-                if center_resp.data:
-                    current_members = center_resp.data[0].get("members", 1)
-                    new_member_count = max(current_members - 1, 0)
+                    # Update or delete the center
+                    center_resp = supabase.table("centers").select("members").eq("id", center_id_to_remove).execute()
+                    if center_resp.data:
+                        current_members = center_resp.data[0].get("members", 1)
+                        new_member_count = max(current_members - 1, 0)
 
-                    if new_member_count == 0:
-                        supabase.table("centers").delete().eq("id", center_id_to_remove).execute()
-                        st.info(f"The center '{center.get('name', center_id_to_remove)}' has been deleted (no remaining members).")
-                    else:
-                        supabase.table("centers").update({"members": new_member_count}).eq("id", center_id_to_remove).execute()
+                        if new_member_count == 0:
+                            supabase.table("centers").delete().eq("id", center_id_to_remove).execute()
+                            st.info(f"The center '{center.get('name', center_id_to_remove)}' has been deleted (no remaining members).")
+                        else:
+                            supabase.table("centers").update({"members": new_member_count}).eq("id", center_id_to_remove).execute()
 
-                st.success(f"You have left the center '{center.get('name', center_id_to_remove)}'.")
-                st.session_state.page = 2
-                st.rerun()
-            else:
-                st.warning("You are not a member of this center.")
+                    st.success(f"You have left the center '{center.get('name', center_id_to_remove)}'.")
+                    st.session_state.page = 2
+                    st.rerun()
+                else:
+                    st.warning("You are not a member of this center.")
 
-        # ---------- Post Dialog ----------
-        @st.dialog("What's on your mind?")
-        def make_post():
-            ptitle = st.text_input("Title")
-            pname = "Anonymous" if st.toggle("Post anonymously") else st.session_state.username
-            pcont = st.text_area("Content")
+            # ---------- Post Dialog ----------
+            @st.dialog("What's on your mind?")
+            def make_post():
+                ptitle = st.text_input("Title")
+                pname = "Anonymous" if st.toggle("Post anonymously") else st.session_state.username
+                pcont = st.text_area("Content")
 
-            if st.button("Post"):
-                if "posts" not in st.session_state:
-                    st.session_state.posts = []
-                st.session_state.posts.append({
-                    "title": ptitle,
-                    "name": pname,
-                    "content": pcont
-                })
-                st.rerun()
+                if st.button("Post"):
+                    if "posts" not in st.session_state:
+                        st.session_state.posts = []
+                    st.session_state.posts.append({
+                        "title": ptitle,
+                        "name": pname,
+                        "content": pcont
+                    })
+                    st.rerun()
 
-        # Open the dialog
-        if post_btn:
-            make_post()
+            # Open the dialog when "Make Post" is clicked
+            if post_btn:
+                make_post()
