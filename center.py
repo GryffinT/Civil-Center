@@ -49,27 +49,46 @@ def center_page(center_id):
     col_main, col_controls = st.columns([8.5, 1.5])
 
     # ---------- Main Posts Section ----------
+    @st.cache_data(ttl=10)
+    def get_center_posts(center_id):
+        resp = supabase.table("centers").select("posts").eq("id", center_id).execute()
+        if resp.data:
+            posts_str = resp.data[0].get("posts", "[]")
+            try:
+                posts_list = ast.literal_eval(posts_str)
+                if not isinstance(posts_list, list):
+                    posts_list = []
+            except (ValueError, SyntaxError):
+                posts_list = []
+            return posts_list
+        return []
+
+    posts_list = get_center_posts(center_id)
+
     with col_main:
         st.subheader("Center Posts")
         posts_container = st.container()
 
-        # --- Fetch posts from Supabase if not yet loaded ---
-        if "posts" not in st.session_state:
-            center_posts_resp = supabase.table("centers").select("posts").eq("id", center_id).execute()
-            if center_posts_resp.data:
-                posts_str = center_posts_resp.data[0].get("posts", "[]")
-                try:
-                    st.session_state.posts = ast.literal_eval(posts_str)
-                    if not isinstance(st.session_state.posts, list):
-                        st.session_state.posts = []
-                except (ValueError, SyntaxError):
-                    st.session_state.posts = []
-            else:
-                st.session_state.posts = []
+        # --- Fetch posts fresh from Supabase ---
+        center_posts_resp = supabase.table("centers").select("posts").eq("id", center_id).execute()
+        if center_posts_resp.data:
+            posts_str = center_posts_resp.data[0].get("posts", "[]")
+            try:
+                posts_list = ast.literal_eval(posts_str)
+                if not isinstance(posts_list, list):
+                    posts_list = []
+            except (ValueError, SyntaxError):
+                posts_list = []
+        else:
+            posts_list = []
 
         # --- Display posts ---
-        if st.session_state.posts:
-            for post in reversed(st.session_state.posts):  # newest first
+        if posts_list:
+            for post in reversed(posts_list):  # show newest first
+                title = post.get("title", "Untitled")
+                name = post.get("name", "Unknown")
+                content = post.get("content", "")
+
                 with posts_container:
                     st.html(f"""
                         <div style="
@@ -80,13 +99,14 @@ def center_page(center_id):
                             background-color: #fafafa;
                             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
                         ">
-                            <h2 style="margin-bottom: 0.5em;">{post.get('title', 'Untitled')}</h2>
-                            <h4 style="color: #666; margin-top: 0;">Posted by {post.get('name', 'Unknown')}</h4>
-                            <p style="overflow-wrap: break-word; white-space: pre-wrap;">{post.get('content', '')}</p>
+                            <h2 style="margin-bottom: 0.5em;">{title}</h2>
+                            <h4 style="color: #666; margin-top: 0;">Posted by {name}</h4>
+                            <p style="overflow-wrap: break-word; white-space: pre-wrap;">{content}</p>
                         </div>
                     """)
         else:
             st.info("No posts yet — be the first to post!")
+
 
     # ---------- Right-Side Controls ----------
     with col_controls:
