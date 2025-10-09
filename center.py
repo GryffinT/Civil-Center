@@ -54,6 +54,5 @@ def center_page(center_id):
             st.button("Leave center", use_container_width=True)
             st.write("")
             st.button("Make post", use_container_width=True)
-            st.write_stream("Hello")
 
     # Additional center functionalities can be added here
