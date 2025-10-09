@@ -8,7 +8,7 @@ def my_centers_page():
     supabase: Client = create_client(url, key)
 
     user_resp = supabase.table("users").select("center_ids").eq("password", st.session_state.password).execute()
-
+    
     if user_resp.data is not None and len(user_resp.data) > 0:
         user_center_ids = user_resp.data[0].get("center_ids") or []
     else:
