@@ -1,5 +1,7 @@
 import streamlit as st
 from streamlit_javascript import st_javascript
+from supabase import create_client, Client
+import bcrypt
 
 if "page" not in st.session_state:
     st.session_state.page = 1
