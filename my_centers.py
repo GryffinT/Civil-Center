@@ -137,7 +137,20 @@ def my_centers_page():
             cid_str = str(cid).strip()
             center = centers_dict.get(cid_str)
             if center:
-                st.write(f"- {center['name']} (ID: {cid_str})")
+                st.html("""
+                <style>
+                .center-card {
+                    border: 1px solid #eee;
+                    border-radius: 8px;
+                    padding: 12px;
+                    margin: 8px 0;
+                    background-color: #f9f9f9;
+                }
+                </style>
+                <div class="center-card">
+                    <p>- {center['name']} (ID: {cid_str})</p>
+                </div>
+                """, unsafe_allow_html=True)
             else:
                 st.write(f"- Center ID: {cid_str} (not found or deleted)")
     else:
