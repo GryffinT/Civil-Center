@@ -139,7 +139,7 @@ def my_centers_page():
             if center:
                 with st.container(border=True):
                     st.html(f"""
-                            <div>
+                            <div style="margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                                 <h1>{center['name']}</h1>
                                 <p>ID: {cid_str}</p>
                             </div>
