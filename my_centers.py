@@ -69,7 +69,10 @@ def my_centers_page():
         submitted = st.form_submit_button("Create Center")
 
         if submitted:
-            if not new_center_password or not new_center_name:
+            password_check = supabase.table("centers").select("*").eq("password", new_center_password).execute()
+            if password_check.data and len(password_check.data) > 0:
+                st.error("This password is already in use. Please choose a different password.")
+            elif not new_center_password or not new_center_name:
                 st.error("Please provide both a name and password for the new center.")
             else:
                 # Generate random 16-character ID
