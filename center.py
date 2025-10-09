@@ -17,7 +17,7 @@ def center_page(center_id):
 
     top_box = st.container(border=True)
     with top_box:
-        col1, col2, col3 = st.columns(3, [1,8,1])
+        col1, col2, col3 = st.columns([1,3,1])
 
         with col1:
             st.html("""
