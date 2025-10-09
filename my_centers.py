@@ -69,8 +69,13 @@ def my_centers_page():
         submitted = st.form_submit_button("Create Center")
 
         if submitted:
-            password_check = supabase.table("centers").select("*").eq("password", new_center_password).execute()
-            if password_check.data == new_center_password and len(password_check.data) > 0:
+            password_resp = supabase.table("centers").select("password").execute()
+            existing_passwords = password_resp.data or []
+            password_in_use = any(
+                bcrypt.checkpw(new_center_password.encode('utf-8'), c["password"].encode('utf-8'))
+                for c in existing_passwords
+            )
+            if password_in_use:
                 st.error("This password is already in use. Please choose a different password.")
             elif not new_center_password or not new_center_name:
                 st.error("Please provide both a name and password for the new center.")
