@@ -1,3 +1,4 @@
 streamlit
 supabase
 bcrypt
+streamlit_navigation_bar
