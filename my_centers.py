@@ -41,7 +41,7 @@ def my_centers_page():
                 if new_center_password:
                     hashed_pw = bcrypt.hashpw(new_center_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
                     create_resp = supabase.table("centers").insert({"password": hashed_pw}).execute()
-                    if create_resp.status_code == 201:
+                    if create_resp.error is None:
                         new_center_id = create_resp.data[0]["id"]
                         if user_resp.data:
                             user_center_ids = user_resp.data[0]["center_ids"] or []
