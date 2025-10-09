@@ -32,7 +32,7 @@ def my_centers_page():
                             st.error("User not found. Please log in again.")
                     else:
                         st.error("Center not found. Please check the password and try again.")
-        with st.form("Create a center!", key="center_create"):
+        with st.form("Create a center!"):
             st.write("Or create a new center!")
             new_center_password = st.text_input("Set a password for your new center", key="new_center_pw")
             new_center_name = st.text_input("Name your center (optional)", key="new_center_name")
