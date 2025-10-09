@@ -25,6 +25,7 @@ def login_page():
                 st.write("")
                 login_password = st.text_input(key="lp", label="Password")
                 st.write("")
+                submitted = st.form_submit_button(key="login", label="Submit")
             with tab2:
                 login_password = ""
                 login_username = ""
@@ -34,7 +35,7 @@ def login_page():
                 st.write("")
                 signup_password = st.text_input(key="sp", label="Password")
                 st.write("")
-            submitted = st.form_submit_button(key="register", label="Submit")
+                submitted = st.form_submit_button(key="register", label="Submit")
         if submitted:
             if login_password and login_username:
                 response = supabase.table("users").select("*").eq("username", login_username).execute()
