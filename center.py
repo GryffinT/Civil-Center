@@ -2,6 +2,7 @@ import streamlit as st
 from supabase import create_client, Client
 import bcrypt
 
+
 def center_page(center_id):
     url = st.secrets["supabase"]["url"]
     key = st.secrets["supabase"]["key"]
@@ -37,4 +38,6 @@ def center_page(center_id):
                         <p>members</p>
                     </div>
                     """)
+    
+
     # Additional center functionalities can be added here
