@@ -8,12 +8,14 @@ def my_centers_page():
     supabase: Client = create_client(url, key)
 
     user_resp = supabase.table("users").select("center_ids").eq("password", st.session_state.password).execute()
-    
+    st.write("DEBUG user_resp:", user_resp.data)
+
     if user_resp.data is not None and len(user_resp.data) > 0:
         user_center_ids = user_resp.data[0].get("center_ids") or []
+        st.write("DEBUG user_center_ids:", user_center_ids)
     else:
         st.error(f"User not found. Please log in again. {user_resp.data}")
-        return
+
 
     center_terminal = st.container()
 
