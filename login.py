@@ -15,7 +15,7 @@ def login_page():
         pass
     with col2:
         with st.form("my_form"):
-            st.markdown("<h1>Civil<sub>Center</sub></h1>")
+            st.markdown("<h1>Civil<sub>Center</sub></h1> ", unsafe_allow_html=True)
             tab1, tab2 = st.tabs(["Login", "Register"])
             with tab1:
                 signup_password = ""
