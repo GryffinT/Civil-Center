@@ -44,7 +44,15 @@ def center_page(center_id):
     with col2:
         container_box = st.container(border=True)
         with container_box:
+            st.html("""
+                    <div>
+                        <h1>Center controls</h1>
+                        <p style="overflow-wrap: break-word;">Manage your presence in this center here</p>
+                    </div>
+                    """)
+            st.header("")
             st.button("Leave center")
+            st.header("")
             st.button("Make post")
 
     # Additional center functionalities can be added here
