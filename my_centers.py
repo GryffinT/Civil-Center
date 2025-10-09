@@ -53,6 +53,7 @@ def my_centers_page():
                         update_resp = supabase.table("users").update({"center_ids": user_center_ids}).eq("username", st.session_state.username).execute()
                         if update_resp.data:
                             st.success(f"Successfully joined center with ID: {center_to_join['id']}")
+                            st.rerun()
                         else:
                             st.error("Failed to join center. Please try again.")
                     else:
@@ -117,6 +118,7 @@ def my_centers_page():
                     update_resp = supabase.table("users").update({"center_ids": centers_list}).eq("username", st.session_state.username).execute()
                     if update_resp.data:
                         st.success(f"Center '{new_center_name}' created with ID: {new_center_id} and joined successfully!")
+                        st.rerun()
                     else:
                         st.error("Failed to join the newly created center. Please try again.")
                 else:
@@ -154,7 +156,10 @@ def my_centers_page():
                                 <p style="background-color: #f0f0f0; border-radius: 5px; padding: 10px;">Description: {center.get('description', 'No description provided.')}</p>
                             </div>
                         """)
-                    st.button("Go to Center", key=f"go_{cid_str}")
+                    if st.button("Go to Center", key=f"go_{cid_str}"):
+                        st.session_state.page = cid
+                        st.rerun()
+
             else:
                 st.write(f"- Center ID: {cid_str} (not found or deleted)")
     else:
