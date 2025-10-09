@@ -144,6 +144,7 @@ def my_centers_page():
                                 <p>ID: {cid_str}</p>
                             </div>
                         """)
+                    st.button("Go to Center", key=f"go_{cid_str}")
             else:
                 st.write(f"- Center ID: {cid_str} (not found or deleted)")
     else:
