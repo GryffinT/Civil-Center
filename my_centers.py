@@ -114,14 +114,18 @@ def my_centers_page():
 
     # -------- Display User Centers --------
     st.header("Your Centers")
-    if user_center_ids:
+
+    if user_center_ids and len(user_center_ids) > 0:
+        # Build a lookup dict for faster access by ID
+        centers_dict = {c["id"]: c for c in centers}
+
         for cid in user_center_ids:
-            # Optionally, display center names instead of IDs:
-            center = next((c for c in centers if c["id"] == cid), None)
+            center = centers_dict.get(cid)
             if center:
                 st.write(f"- {center['name']} (ID: {cid})")
             else:
-                st.write(f"- Center ID: {cid}")
+                st.write(f"- Center ID: {cid} (not found or deleted)")
     else:
         st.write("You haven’t joined any centers yet.")
+
     st.write("Use the forms above to join or create a center.")
