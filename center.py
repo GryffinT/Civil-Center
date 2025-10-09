@@ -23,7 +23,7 @@ def center_page(center_id):
             st.markdown("""<img src="https://i.postimg.cc/Y94ZzCy8/mentorship.gif"></img>""", unsafe_allow_html=True)
         with col2:
             st.html(f"""
-                    <h1 style="margin-bottom: -5px;margin-top: -1px">{center.get('name', 'Unnamed Center')}</h1>
+                    <h1 style="margin-bottom: -5px;margin-top: 1px">{center.get('name', 'Unnamed Center')}</h1>
                     <p><em>{center.get('description', f'The center for {center.get('name')}')}</em></p>
                     """)
         with col3:
