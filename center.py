@@ -15,8 +15,13 @@ def center_page(center_id):
 
     center = center_resp.data[0]
 
-    st.title(f"Center: {center.get('name', 'Unnamed Center')}")
-    st.write(f"Description: {center.get('description', 'No description provided.')}")
-    st.write(f"Center ID: {center_id}")
+    top_box = st.container(border=True)
+    with top_box:
+        col1, col2, col3 = st.columns([1,8,1])
+
+        with col1:
+            st.html("""
+                    <img src="https://i.postimg.cc/Y94ZzCy8/mentorship.gif"></img>
+                    """)
 
     # Additional center functionalities can be added here
