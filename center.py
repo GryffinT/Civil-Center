@@ -38,6 +38,13 @@ def center_page(center_id):
                         <p>{center.get('members')} members</p>
                     </div>
                     """)
-    
+    col1, col2 = st.columns(9,1)
+    with col1:
+        pass
+    with col2:
+        container_box = st.container(border=True)
+        with container_box:
+            st.button("Leave center")
+            st.button("Make post")
 
     # Additional center functionalities can be added here
