@@ -1,7 +1,8 @@
 from landing import landing_page
 import streamlit as st
 from login import login_page
-from my_centers import my_centers_page
+from my_centers import my_centers_pag
+from center import center_page
 
 if "page" not in st.session_state:
   st.session_state.page = 0
@@ -15,4 +16,4 @@ elif st.session_state.page == 1:
 elif st.session_state.page == 2:
   my_centers_page()
 elif st.session_state.page == 3:
-  st.write(f"Active Center ID: {st.session_state.active_center}")
+  center_page(st.session_state.active_center)
