@@ -28,8 +28,9 @@ def center_page(center_id):
                     """)
         with col3:
             st.html(f"""
-                    <div style="text-align:center;">
+                    <div style="text-align:center; margin-top: 10px;">
                         <img src="https://i.postimg.cc/5yWZnMzD/members.gif" style="height:60px; width:60px;" />
+                        <p>members</p>
                     </div>
                     """)
     # Additional center functionalities can be added here
