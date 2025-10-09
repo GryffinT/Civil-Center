@@ -65,6 +65,7 @@ def my_centers_page():
         st.write("Or create a new center!")
         new_center_password = st.text_input("Set a password for your new center", key="new_center_pw")
         new_center_name = st.text_input("Name your center (required)", key="new_center_name")
+        new_description = st.text_area("Describe your center (optional)", key="new_center_desc")
         submitted = st.form_submit_button("Create Center")
 
         if submitted:
@@ -83,7 +84,8 @@ def my_centers_page():
                     "name": new_center_name,
                     "password": hashed_pw,
                     "admins": [st.session_state.username],
-                    "posts": []
+                    "posts": [],
+                    "description": new_description
                 }).execute()
 
                 if create_resp.data and len(create_resp.data) > 0:
@@ -139,15 +141,17 @@ def my_centers_page():
             if center:
                 with st.container(border=True):
                     st.html(f"""
-                            <div style="margin-top: 10px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                            <div>
                                 <h1>{center['name']}</h1>
-                                <p>ID: {cid_str}</p>
+                                <p>Center ID: {cid_str}</p>
+                                <p>Description: {center.get('description', 'No description provided.')}</p>
+                                <p>Admins: {', '.join(center.get('admins', []))}</p>
                             </div>
                         """)
                     st.button("Go to Center", key=f"go_{cid_str}")
             else:
                 st.write(f"- Center ID: {cid_str} (not found or deleted)")
     else:
-        st.write("You haven’t joined any centers yet.")
+        st.write("You haven't joined any centers yet.")
 
     st.write("Use the forms above to join or create a center.")
