@@ -27,6 +27,7 @@ def center_page(center_id):
                     <p><em>{center.get('description', f'The center for {center.get('name')}')}</em></p>
                     """)
         with col3:
-            st.write("Hello")
-
+            st.html(f"""
+                    <img style="height: 20px; width: 20px" src="https://i.postimg.cc/5yWZnMzD/members.gif" />
+                    """)
     # Additional center functionalities can be added here
