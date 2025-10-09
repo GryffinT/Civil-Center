@@ -251,7 +251,7 @@ def my_centers_page():
                             # Increment center member count BEFORE rerun
                             try:
                                 rpc_resp = supabase.rpc("increment_members", {"center_id": center_id}).execute()
-                                st.write("RPC response:", rpc_resp.data if rpc_resp else "No response")
+                                print("RPC response:", rpc_resp.data if rpc_resp else "No response")
                             except Exception as rpc_err:
                                 st.warning(f"Couldn't increment center member count (RPC error): {rpc_err}")
 
