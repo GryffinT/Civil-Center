@@ -157,7 +157,9 @@ def my_centers_page():
                             </div>
                         """)
                     if st.button("Go to Center", key=f"go_{cid_str}"):
-                        st.session_state.page = cid
+                        if "active_center" not in st.session_state:
+                            st.session_state.active_center = cid
+                            print(st.session_state.active_center)
                         st.rerun()
 
             else:
