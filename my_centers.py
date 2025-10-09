@@ -6,12 +6,13 @@ def my_centers_page():
     url = st.secrets["supabase"]["url"]
     key = st.secrets["supabase"]["key"]
     supabase: Client = create_client(url, key)
-    
+
     user_resp = supabase.table("users").select("center_ids").eq("password", st.session_state.password).execute()
-    if user_resp.data:
-        user_center_ids = user_resp.data[0]["center_ids"] or []  # default to empty list if None
+
+    if user_resp.data is not None and len(user_resp.data) > 0:
+        user_center_ids = user_resp.data[0].get("center_ids") or []
     else:
-        st.error("User not found. Please log in again.")
+        st.error(f"User not found. Please log in again. {st.session_state.password}")
         return
 
     center_terminal = st.container()
