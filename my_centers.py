@@ -234,7 +234,7 @@ def my_centers_page():
                                 <p style="background-color: #f0f0f0; border-radius: 5px; padding: 10px;">Description: {center.get('description', 'No description provided.')}</p>
                             </div>
                         """)
-                    if st.button("Go to Center", key=f"go_{cid_str}", use_container_width=True, type="tertiary"):
+                    if st.button("Go to Center", key=f"go_{cid_str}", use_container_width=True):
                         st.session_state.active_center = cid
                         st.session_state.page = 3
                         st.rerun()
