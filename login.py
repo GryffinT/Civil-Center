@@ -49,7 +49,7 @@ def login_page():
                         st.error("Incorrect password.")
                 else:
                     st.error("Username not found.")
-            elif signup_password and signup_username:
+            elif signup_password or signup_username:
                 response = supabase.table("users").select("*").eq("username", signup_username).execute()
                 if response.data:
                     st.error("Username already exists.")
@@ -59,8 +59,10 @@ def login_page():
                     st.success("Signup successful! Please log in.")
                     st.session_state.page = 0
                     st.rerun()
-            else:
+            elif not (login_password or login_username or signup_password or signup_username):
                 st.error("Please fill in all fields.")
+            else:
+                st.error("ERROR")
 
     with col3:
         pass
