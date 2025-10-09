@@ -35,7 +35,7 @@ def center_page(center_id):
             st.html(f"""
                     <div style="text-align:center; margin-top: 15px;">
                         <img src="https://i.postimg.cc/5yWZnMzD/members.gif" style="height:60px; width:60px;" />
-                        <p>{center.get('members')}members</p>
+                        <p>{center.get('members')} members</p>
                     </div>
                     """)
     
