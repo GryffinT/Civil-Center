@@ -242,7 +242,7 @@ def my_centers_page():
                             border-radius: 8px;
                             width: 100%;
                             font-size: 16px;
-                            padding: 8px 0;
+                            padding: 20px 0;
                         }}
                         </style>
                     """, unsafe_allow_html=True)
