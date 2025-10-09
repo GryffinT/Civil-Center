@@ -23,7 +23,6 @@ def center_page(center_id):
             st.html(f"""
                         <div style="text-align:center;">
                             <img src="https://i.postimg.cc/Y94ZzCy8/mentorship.gif" style="height:100px; width:100px;" />
-                            <p>members</p>
                         </div>
                         """)
         with col2:
