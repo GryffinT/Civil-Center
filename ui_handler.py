@@ -3,7 +3,7 @@ import streamlit as st
 from login import login_page
 from my_centers import my_centers_page
 from center import center_page
-from st.components.v1 import declare_component
+from streamlit.components.v1 import declare_component
 
 if "page" not in st.session_state:
   st.session_state.page = 0
