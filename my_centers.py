@@ -6,10 +6,10 @@ def my_centers_page():
     url = st.secrets["supabase"]["url"]
     key = st.secrets["supabase"]["key"]
     supabase: Client = create_client(url, key)
-
+    
     user_resp = supabase.table("users").select("center_ids").eq("password", st.session_state.password).execute()
     if user_resp.data:
-        user_center_ids = user_resp.data[0]["center_ids"] or []
+        user_center_ids = user_resp.data[0]["center_ids"] or []  # default to empty list if None
     else:
         st.error("User not found. Please log in again.")
         return
@@ -72,9 +72,9 @@ def my_centers_page():
                     else:
                         st.error("Failed to create center. Please try again.")
 
+    st.header("Your Centers")
     if user_center_ids:
-        st.header("Your Centers")
         for cid in user_center_ids:
             st.write(f"- Center ID: {cid}")
     else:
-        st.header("Join some centers to see them here!")
+        st.write("You haven’t joined any centers yet.")
