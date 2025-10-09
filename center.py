@@ -55,7 +55,7 @@ def center_page(center_id):
             st.write("")
             post = st.button("Make post", use_container_width=True)
             if leave:
-                st.session_state.page = 3
+                st.session_state.page = 2
                 st.rerun()
 
 
