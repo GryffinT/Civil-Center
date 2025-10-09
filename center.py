@@ -28,7 +28,7 @@ def center_page(center_id):
         with col2:
             st.html(f"""
                     <h1 style="margin-bottom: -5px;margin-top: 10px">{center.get('name', 'Unnamed Center')}</h1>
-                    <p><em>{center.get('description', f'The center for {center.get('name')}')} ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss</em></p>
+                    <p style="text-wrapped= True;"><em>{center.get('description', f'The center for {center.get('name')}')} ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss</em></p>
                     """)
         with col3:
             st.html(f"""
