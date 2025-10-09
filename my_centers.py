@@ -137,12 +137,12 @@ def my_centers_page():
             cid_str = str(cid).strip()
             center = centers_dict.get(cid_str)
             if center:
-                st.html(f"""
-                        <div>
-                            <h1>{center['name']}</h1>
-                            <p>ID: {cid_str}</p>
-                            <p>{st.button("Join Center", key=f"join_{cid_str}")}</p>
-                        </div>
+                with st.container(border=True):
+                    st.html(f"""
+                            <div>
+                                <h1>{center['name']}</h1>
+                                <p>ID: {cid_str}</p>
+                            </div>
                         """)
             else:
                 st.write(f"- Center ID: {cid_str} (not found or deleted)")
