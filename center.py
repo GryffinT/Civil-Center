@@ -20,7 +20,7 @@ def center_page(center_id):
         col1, col2, col3 = st.columns([1,3,1])
 
         with col1:
-            st.markdown("""<img src="https://i.postimg.cc/Y94ZzCy8/mentorship.gif"></img>""", unsafe_allow_html=True)
+            st.markdown("""<img style="height:100px; width:100px;"src="https://i.postimg.cc/Y94ZzCy8/mentorship.gif"></img>""", unsafe_allow_html=True)
         with col2:
             st.html(f"""
                     <h1 style="margin-bottom: -5px;margin-top: 10px">{center.get('name', 'Unnamed Center')}</h1>
