@@ -1,6 +1,7 @@
 import streamlit as st
 import bcrypt
 from supabase import create_client, Client
+import json
 
 def my_centers_page():
     # Initialize Supabase client
@@ -77,8 +78,25 @@ def my_centers_page():
 
                 if create_resp.data and len(create_resp.data) > 0:
                     new_center_id = create_resp.data[0]["id"]
-                    user_center_ids.append(new_center_id)
-                    update_resp = supabase.table("users").update({"center_ids": user_center_ids}).eq("username", st.session_state.username).execute()
+
+                    # Ensure user_center_ids is a list
+                    if isinstance(user_center_ids, list):
+                        centers_list = user_center_ids
+                    elif isinstance(user_center_ids, str):
+                        try:
+                            centers_list = json.loads(user_center_ids)
+                            if not isinstance(centers_list, list):
+                                centers_list = [centers_list]
+                        except json.JSONDecodeError:
+                            centers_list = [user_center_ids] if user_center_ids else []
+                    else:
+                        centers_list = []
+
+                    # Append new center
+                    centers_list.append(new_center_id)
+
+                    # Update user record
+                    update_resp = supabase.table("users").update({"center_ids": centers_list}).eq("username", st.session_state.username).execute()
                     if update_resp.data:
                         st.success(f"Center '{new_center_name}' created with ID: {new_center_id} and joined successfully!")
                     else:
