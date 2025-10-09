@@ -50,9 +50,10 @@ def center_page(center_id):
                         <p style="overflow-wrap: break-word;">Manage your presence in this center here</p>
                     </div>
                     """)
-            st.header("")
-            st.button("Leave center")
-            st.header("")
-            st.button("Make post")
+            st.write("")
+            st.button("Leave center", use_container_width=True)
+            st.write("")
+            st.button("Make post", use_container_width=True)
+            st.write_stream("Hello")
 
     # Additional center functionalities can be added here
