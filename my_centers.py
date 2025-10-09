@@ -6,10 +6,10 @@ def my_centers_page():
     url = st.secrets["supabase"]["url"]
     key = st.secrets["supabase"]["key"]
     supabase: Client = create_client(url, key)
-    user_resp = supabase.table("users").select("center ids").eq("password", st.session_state.password).execute()
+    user_resp = supabase.table("users").select("center_ids").eq("password", st.session_state.password).execute()
 
     if user_resp.data:
-        user_center_ids = user_resp.data[0]["center ids"]
+        user_center_ids = user_resp.data[0]["center_ids"]
         print(user_center_ids)
     else:
         user_center_ids = None
