@@ -253,7 +253,7 @@ def my_centers_page():
                                 rpc_resp = supabase.rpc("increment_members", {"center_id": center_id}).execute()
                                 print("RPC response:", rpc_resp.data if rpc_resp else "No response")
                             except Exception as rpc_err:
-                                st.warning(f"Couldn't increment center member count (RPC error): {rpc_err}")
+                                print(f"Couldn't increment center member count (RPC error): {rpc_err}")
 
                             st.success(f"Successfully joined center with ID: {center_id}")
                             st.rerun()
