@@ -47,7 +47,7 @@ def my_centers_page():
                             user_center_ids = user_resp.data[0]["center_ids"] or []
                             user_center_ids.append(new_center_id)
                             update_resp = supabase.table("users").update({"center_ids": user_center_ids}).eq("password", st.session_state.password).execute()
-                            if update_resp.status_code == 200:
+                            if update_resp.error is None:
                                 st.success(f"Center created with ID: {new_center_id} and joined successfully!")
                             else:
                                 st.error("Failed to join the newly created center. Please try again.")
