@@ -17,10 +17,12 @@ elif st.session_state.page == 1:
 elif st.session_state.page == 2:
   my_centers_page()
 elif st.session_state.page == 3:
-  black_button = declare_component("black_button", path="components/black_button/")
+  black_button = declare_component("black_button", path="components/black_button")
 
-  clicked = black_button(default=False, key="other_page_button")
+  clicked = black_button(default=False, key="main_button")
 
   if clicked:
-      st.success("Other page button clicked!")
+      st.success("Button clicked!")
+  else:
+      st.write("Waiting for click...")
   center_page(st.session_state.active_center)

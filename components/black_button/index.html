@@ -1,33 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
-<style>
-button {
-  background-color: black;
-  color: white;
-  border: none;
-  padding: 14px 28px;
-  font-size: 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.25s;
-}
-button:hover {
-  background-color: #333;
-  transform: scale(1.05);
-}
-</style>
-</head>
-<body>
-  <button id="btn">Click Me</button>
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+      }
 
-  <script>
-    const btn = document.getElementById("btn");
-    btn.addEventListener("click", () => {
-      const streamlit = window.parent.Streamlit;
-      streamlit.setComponentValue(true);
-    });
-    window.parent.Streamlit.setComponentReady();
-  </script>
-</body>
+      button {
+        background-color: black;
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        font-size: 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.25s;
+      }
+
+      button:hover {
+        background-color: #333;
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <button id="btn">Click Me</button>
+
+    <script>
+      const Streamlit = window.parent.Streamlit;
+
+      // Tell Streamlit that we’re ready
+      Streamlit.setComponentReady();
+
+      // Send an initial value (False)
+      Streamlit.setComponentValue(false);
+
+      // Handle button click
+      document.getElementById("btn").addEventListener("click", () => {
+        Streamlit.setComponentValue(true);
+      });
+    </script>
+  </body>
 </html>
