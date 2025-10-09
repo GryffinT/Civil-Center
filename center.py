@@ -20,6 +20,7 @@ def center_page(center_id):
         col1, col2, col3 = st.columns([1,3,1])
 
         with col1:
+            st.image("https://i.postimg.cc/Y94ZzCy8/mentorship.gif")
             st.html("""
                     <img style="wdith: 10px; height=10px;" src="https://i.postimg.cc/Y94ZzCy8/mentorship.gif"></img>
                     """)
