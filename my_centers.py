@@ -7,15 +7,19 @@ def my_centers_page():
     key = st.secrets["supabase"]["key"]
     supabase: Client = create_client(url, key)
 
-    user_resp = supabase.table("users").select("center_ids").eq("password", st.session_state.password).execute()
-    st.write("DEBUG user_resp:", user_resp.data)
+    user_resp = supabase.table("users").select("*").eq("username", st.session_state.username).execute()
 
-    if user_resp.data is not None and len(user_resp.data) > 0:
-        user_center_ids = user_resp.data[0].get("center_ids") or []
-        st.write("DEBUG user_center_ids:", user_center_ids)
+    if user_resp.data and len(user_resp.data) > 0:
+        user = user_resp.data[0]
+        # Verify password
+        if bcrypt.checkpw(st.session_state.password.encode('utf-8'), user["password"].encode('utf-8')):
+            user_center_ids = user.get("center_ids") or []
+        else:
+            st.error("Incorrect password. Please log in again.")
+            return
     else:
-        st.error(f"User not found. Please log in again. {user_resp.data}")
-
+        st.error("User not found. Please log in again.")
+        return
 
     center_terminal = st.container()
 
