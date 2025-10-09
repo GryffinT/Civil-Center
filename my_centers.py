@@ -148,10 +148,9 @@ def my_centers_page():
                         # Update user's center_ids in Supabase
                         update_resp = supabase.table("users").update({"center_ids": updated_center_ids_str}).eq("username", st.session_state.username).execute()
 
-                        # Increment the members count in the center
                         update_members = supabase.rpc(
                             "increment_members",
-                            {"center_id": center_to_join["id"]}
+                            {"center_id": center_to_join["id"]}  # Same dictionary format
                         ).execute()
 
                         if update_resp.data:
