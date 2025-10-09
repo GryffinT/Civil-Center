@@ -12,9 +12,7 @@ if "page" not in st.session_state:
   st.session_state.page = 0
 if "active_center" not in st.session_state:
   st.session_state.active_center = None
-
-page = st_navbar(["Home", "My Centers", "About"])
-
+page = ""
 if st.session_state.page == 0 or page == "Home":
   st.session_state.page = 0
   landing_page()
