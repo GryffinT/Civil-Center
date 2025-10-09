@@ -28,6 +28,6 @@ def center_page(center_id):
                     """)
         with col3:
             st.html(f"""
-                    <img style="height: 20px; width: 20px" src="https://i.postimg.cc/5yWZnMzD/members.gif" />
+                    <img style="height: 60px; width: 60px; align: center" src="https://i.postimg.cc/5yWZnMzD/members.gif" />
                     """)
     # Additional center functionalities can be added here
