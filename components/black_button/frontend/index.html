@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <style>
-      html, body {
+      body {
         margin: 0;
-        padding: 0;
         background: transparent;
       }
-
       button {
         background-color: black;
         color: white;
         border: none;
         padding: 14px 28px;
-        font-size: 18px;
         border-radius: 8px;
+        font-size: 18px;
         cursor: pointer;
         transition: 0.25s;
       }
-
       button:hover {
         background-color: #333;
         transform: scale(1.05);
@@ -28,17 +25,11 @@
   </head>
   <body>
     <button id="btn">Click Me</button>
-
     <script>
       const Streamlit = window.parent.Streamlit;
-
-      // Tell Streamlit that we’re ready
       Streamlit.setComponentReady();
-
-      // Send an initial value (False)
       Streamlit.setComponentValue(false);
 
-      // Handle button click
       document.getElementById("btn").addEventListener("click", () => {
         Streamlit.setComponentValue(true);
       });

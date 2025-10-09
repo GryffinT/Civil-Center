@@ -6,6 +6,8 @@ from center import center_page
 from streamlit.components.v1 import declare_component
 from streamlit.components.v1 import html
 from pathlib import Path
+from components.black_button import black_button
+
 
 
 if "page" not in st.session_state:
@@ -20,72 +22,10 @@ elif st.session_state.page == 1:
 elif st.session_state.page == 2:
   my_centers_page()
 elif st.session_state.page == 3:
-  if "button_clicked" not in st.session_state:
-      st.session_state.button_clicked = False
+  clicked = black_button(default=False, key="my_black_button")
 
-  # HTML + JS
-  html_code = """
-  <style>
-  button {
-    background-color: black;
-    color: white;
-    border: none;
-    padding: 14px 28px;
-    border-radius: 8px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: 0.25s;
-  }
-  button:hover {
-    background-color: #333;
-    transform: scale(1.05);
-  }
-  </style>
-
-  <button id="my-button">Click Me</button>
-
-  <script>
-  const btn = document.getElementById("my-button");
-
-  // When the button is clicked, send a message to Streamlit
-  btn.addEventListener("click", () => {
-      window.parent.postMessage({isClicked: true}, "*");
-  });
-  </script>
-  """
-
-  # Render HTML
-  html(html_code, height=100)
-
-  # Listen for messages from JS
-  import streamlit.components.v1 as components
-
-  components.html(
-      """
-      <script>
-      window.addEventListener("message", (event) => {
-          if (event.data.isClicked) {
-              window.parent.postMessage({clicked: true}, "*");
-          }
-      });
-      </script>
-      """,
-      height=0,
-  )
-
-  # Use Streamlit session state to handle the click
-  if st.session_state.button_clicked:
-      st.success("Button was clicked!")
+  if clicked:
+      st.success("Button clicked!")
   else:
-      # Detect the click
-      js_code = """
-      <script>
-      window.addEventListener("message", (event) => {
-          if (event.data.isClicked) {
-              fetch("/_st_session_state_button", {method: "POST"})
-          }
-      });
-      </script>
-      """
-      html(js_code, height=0)
+      st.write("Waiting for click...")
   center_page(st.session_state.active_center)
