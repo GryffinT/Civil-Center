@@ -51,8 +51,12 @@ def center_page(center_id):
                     </div>
                     """)
             st.write("")
-            st.button("Leave center", use_container_width=True)
+            leave = st.button("Leave center", use_container_width=True)
             st.write("")
-            st.button("Make post", use_container_width=True)
+            post = st.button("Make post", use_container_width=True)
+            if leave:
+                st.session_state.page = 3
+                st.rerun()
+
 
     # Additional center functionalities can be added here
