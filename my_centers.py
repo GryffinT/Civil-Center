@@ -257,18 +257,26 @@ def my_centers_page():
             cid_str = str(cid).strip()
             center = centers_dict.get(cid_str)
             if center:
+                # Use container with border
                 with st.container(border=True):
-                    st.html(f"""
-                            <div>
-                                <h1>{center['name']}</h1>
-                                <p style="background-color: #f0f0f0; border-radius: 5px; padding: 10px;">Description: {center.get('description', 'No description provided.')}</p>
-                            </div>
-                        """)
+                    st.markdown(f"""
+                        <div style="
+                            padding: 15px; 
+                            border-radius: 10px; 
+                            background-color: #fafafa; 
+                            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                        ">
+                            <h2 style="margin-bottom: 10px;">{center['name']}</h2>
+                            <p style="background-color: #f0f0f0; border-radius: 5px; padding: 10px;">
+                                Description: {center.get('description', 'No description provided.')}
+                            </p>
+                        </div>
+                    """, unsafe_allow_html=True)
+
                     if st.button("Go to Center", key=f"go_{cid_str}", use_container_width=True):
                         st.session_state.active_center = cid
                         st.session_state.page = 3
                         st.rerun()
-
             else:
                 st.write(f"- Center ID: {cid_str} (not found or deleted)")
     else:
