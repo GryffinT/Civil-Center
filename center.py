@@ -100,15 +100,45 @@ def center_page(center_id):
                     st.rerun()
                 else:
                     st.warning("You are not a member of this center.")
-            @st.dialog("Whats on your mind?")
+            # Define a container outside the dialog — on the main page
+            posts_container = st.container()
+
+            @st.dialog("What's on your mind?")
             def make_post():
-                st.text_input("Title")
-                st.toggle("Post anonymously")
-                st.text_area("Content")
+                ptitle = st.text_input("Title")
+                if st.toggle("Post anonymously"):
+                    pname = "Anonymous"
+                else:
+                    pname = "YourUsername"  # or users_resp.get("username")
+                pcont = st.text_area("Content")
+
                 if st.button("Post"):
-                    st.write("Hello")
-            if post:
+                    # Return the post info, instead of rendering it here
+                    st.session_state.new_post = {
+                        "title": ptitle,
+                        "name": pname,
+                        "content": pcont
+                    }
+                    st.rerun()  # Closes the dialog and refreshes page
+
+
+            # --- Main Page Logic ---
+
+            # Button to open the dialog
+            if st.button("New Post"):
                 make_post()
- 
+
+            # If a new post exists in session_state, render it to the page
+            if "new_post" in st.session_state:
+                post = st.session_state.new_post
+                with posts_container:
+                    st.html(f"""
+                    <div style="border: 1px solid #ccc; border-radius: 10px; padding: 1em; margin: 1em 0;">
+                        <h1>{post['title']}</h1>
+                        <h3>Posted by {post['name']}</h3>
+                        <p style="overflow-wrap: break-word;">{post['content']}</p>
+                    </div>
+                    """)
+            
                     
 
