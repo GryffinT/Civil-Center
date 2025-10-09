@@ -211,11 +211,12 @@ def my_centers_page():
     with st.form("join_center_form"):
         center_password = st.text_input("Enter Center password", type="password")
         submitted = st.form_submit_button("Join Center")
+
         if submitted:
             if not center_password:
                 st.error("Please enter a center password.")
             else:
-                # Find matching center by password
+                # Find the matching center by password
                 center_to_join = next(
                     (
                         c
@@ -230,33 +231,35 @@ def my_centers_page():
                     st.error("Center not found. Please check the password and try again.")
                 else:
                     center_id = str(center_to_join["id"]).strip()
-                    # Re-parse in case user_center_ids changed elsewhere
+                    
+                    # Re-parse user's current center IDs
                     user_center_ids = parse_center_ids(user.get("center_ids"))
 
                     if center_id in user_center_ids:
                         st.info("You are already a member of this center.")
                     else:
-                        # Append and persist
+                        # Append new center ID and stringify
                         user_center_ids.append(center_id)
                         updated_center_ids_str = stringify_center_ids(user_center_ids)
 
                         # Update user's center_ids in Supabase
-                        update_resp = supabase.table("users").update({"center_ids": updated_center_ids_str}).eq(
-                            "username", st.session_state.username
-                        ).execute()
+                        update_resp = supabase.table("users").update(
+                            {"center_ids": updated_center_ids_str}
+                        ).eq("username", st.session_state.username).execute()
 
                         if update_resp and getattr(update_resp, "data", None):
-                            st.success(f"Successfully joined center with ID: {center_id}")
-                            st.rerun()
-                            # Call RPC to increment members count (gracefully handle errors)
+                            # Increment center member count BEFORE rerun
                             try:
                                 rpc_resp = supabase.rpc("increment_members", {"center_id": center_id}).execute()
-                                st.print("RPC response:", rpc_resp.data if rpc_resp else "No response")
+                                st.write("RPC response:", rpc_resp.data if rpc_resp else "No response")
                             except Exception as rpc_err:
-                                rpc_resp = None
-                                st.warning("Couldn't increment center member count (RPC error).")
+                                st.warning(f"Couldn't increment center member count (RPC error): {rpc_err}")
+
+                            st.success(f"Successfully joined center with ID: {center_id}")
+                            st.rerun()
                         else:
                             st.error("Failed to join center. Please try again.")
+
 
     # -------- Create a Center --------
     with st.form("create_center_form"):
