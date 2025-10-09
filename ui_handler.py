@@ -1,7 +1,7 @@
 from landing import landing_page
 import streamlit as st
 from login import login_page
-from my_centers import my_centers_pag
+from my_centers import my_centers_page
 from center import center_page
 
 if "page" not in st.session_state:
