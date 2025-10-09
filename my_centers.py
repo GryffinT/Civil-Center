@@ -232,7 +232,7 @@ def my_centers_page():
                                 <h1>{center['name']}</h1>
                                 <p style="background-color: #f0f0f0; border-radius: 5px; padding: 10px;">Description: {center.get('description', 'No description provided.')}</p>
                             </div>
-                        """)a
+                        """)
                     from st.components.v1 import html
 
                     html("""
