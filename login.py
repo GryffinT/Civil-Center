@@ -15,7 +15,7 @@ def login_page():
         pass
     with col2:
         with st.form("my_form"):
-            tab1, tab2 = st.tabs(["Login", "Signup"])
+            tab1, tab2 = st.tabs(["Login", "Register"])
             with tab1:
                 signup_password = ""
                 signup_username = ""
@@ -23,9 +23,9 @@ def login_page():
                 st.write("")
                 login_username = st.text_input(key="lu", label="Username")
                 st.write("")
-                login_password = st.text_input(key="lp", label="Password")
+                login_password = st.text_input(key="lp", label="Password", type="password")
                 st.write("")
-                submitted = st.form_submit_button(key="login", label="Submit")
+                submitted = st.form_submit_button(key="login", label="Login")
                 if submitted:
                     if not (login_password and login_username):
                         st.error("Please fill in all fields.")
@@ -45,13 +45,13 @@ def login_page():
             with tab2:
                 login_password = ""
                 login_username = ""
-                st.header("Signup")
+                st.header("Register")
                 st.write("")
                 signup_username = st.text_input(key="su", label="Username")
                 st.write("")
-                signup_password = st.text_input(key="sp", label="Password")
+                signup_password = st.text_input(key="sp", label="Password", type="password")
                 st.write("")
-                submitted = st.form_submit_button(key="register", label="Submit")
+                submitted = st.form_submit_button(key="register", label="Register")
                 if submitted:
                     if signup_password and signup_username:
                         response = supabase.table("users").select("*").eq("username", signup_username).execute()
