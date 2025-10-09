@@ -53,15 +53,36 @@ def center_page(center_id):
         st.subheader("Center Posts")
         posts_container = st.container()
 
-        # Display all posts stored in session_state
-        if "posts" in st.session_state and st.session_state.posts:
-            for post in st.session_state.posts:
+        # --- Fetch posts from Supabase if not yet loaded ---
+        if "posts" not in st.session_state:
+            center_posts_resp = supabase.table("centers").select("posts").eq("id", center_id).execute()
+            if center_posts_resp.data:
+                posts_str = center_posts_resp.data[0].get("posts", "[]")
+                try:
+                    st.session_state.posts = ast.literal_eval(posts_str)
+                    if not isinstance(st.session_state.posts, list):
+                        st.session_state.posts = []
+                except (ValueError, SyntaxError):
+                    st.session_state.posts = []
+            else:
+                st.session_state.posts = []
+
+        # --- Display posts ---
+        if st.session_state.posts:
+            for post in reversed(st.session_state.posts):  # newest first
                 with posts_container:
                     st.html(f"""
-                        <div style="border: 1px solid #ccc; border-radius: 10px; padding: 1em; margin: 1em 0;">
-                            <h2>{post['title']}</h2>
-                            <h4>Posted by {post['name']}</h4>
-                            <p style="overflow-wrap: break-word;">{post['content']}</p>
+                        <div style="
+                            border: 1px solid #ccc;
+                            border-radius: 10px;
+                            padding: 1em;
+                            margin: 1em 0;
+                            background-color: #fafafa;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                        ">
+                            <h2 style="margin-bottom: 0.5em;">{post.get('title', 'Untitled')}</h2>
+                            <h4 style="color: #666; margin-top: 0;">Posted by {post.get('name', 'Unknown')}</h4>
+                            <p style="overflow-wrap: break-word; white-space: pre-wrap;">{post.get('content', '')}</p>
                         </div>
                     """)
         else:
@@ -131,13 +152,35 @@ def center_page(center_id):
                 pcont = st.text_area("Content")
 
                 if st.button("Post"):
+                    # Build the post dictionary
+                    post_data = {"title": ptitle, "name": pname, "content": pcont}
+
+                    # --- Fetch current posts from Supabase ---
+                    center_posts_resp = supabase.table("centers").select("posts").eq("id", center_id).execute()
+                    if center_posts_resp.data:
+                        posts_str = center_posts_resp.data[0].get("posts", "[]")
+                        try:
+                            posts_list = ast.literal_eval(posts_str)
+                            if not isinstance(posts_list, list):
+                                posts_list = []
+                        except (ValueError, SyntaxError):
+                            posts_list = []
+                    else:
+                        posts_list = []
+
+                    # --- Append new post ---
+                    posts_list.append(post_data)
+
+                    # --- Convert list back to string and update Supabase ---
+                    updated_posts_str = str(posts_list)
+                    supabase.table("centers").update({"posts": updated_posts_str}).eq("id", center_id).execute()
+
+                    # --- Store in session_state for immediate display ---
                     if "posts" not in st.session_state:
                         st.session_state.posts = []
-                    st.session_state.posts.append({
-                        "title": ptitle,
-                        "name": pname,
-                        "content": pcont
-                    })
+                    st.session_state.posts = posts_list  # sync session with DB
+
+                    st.success("Post created successfully!")
                     st.rerun()
 
             # Open the dialog when "Make Post" is clicked
