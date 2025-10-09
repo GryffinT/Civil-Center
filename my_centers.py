@@ -129,6 +129,10 @@ def my_centers_page():
                     if center_to_join["id"] not in user_center_ids:
                         user_center_ids.append(center_to_join["id"])
                         update_resp = supabase.table("users").update({"center_ids": user_center_ids}).eq("username", st.session_state.username).execute()
+                        update_members = supabase.rpc(
+                            "increment_members",  # Name of your Postgres function
+                            {"center_id": center_to_join["id"]}  # Pass any parameters if needed
+                        ).execute()
                         if update_resp.data:
                             st.success(f"Successfully joined center with ID: {center_to_join['id']}")
                             st.rerun()
@@ -172,7 +176,8 @@ def my_centers_page():
                     "password": hashed_pw,
                     "admins": [st.session_state.username],
                     "posts": [],
-                    "description": new_description
+                    "description": new_description,
+                    "members": 1
                 }).execute()
 
                 if create_resp.data and len(create_resp.data) > 0:
