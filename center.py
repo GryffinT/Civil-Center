@@ -81,6 +81,9 @@ def center_page(center_id):
     url = st.secrets["supabase"]["url"]
     key = st.secrets["supabase"]["key"]
     supabase: Client = create_client(url, key)
+    st.html("""
+            <br style="margin-bottom: 5px;">
+            """)
 
     # Fetch center details
     center_resp = supabase.table("centers").select("*").eq("id", center_id).execute()
