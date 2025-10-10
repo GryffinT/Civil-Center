@@ -186,19 +186,18 @@ def center_page(center_id):
                             <p style="overflow-wrap: break-word; white-space: pre-wrap;">{content}</p>
                         </div>
                     """)
-                    with col1:
-                        if bad:    
-                            badge_map = {
-                                0: "Help",
-                                1: "Suggestion",
-                                2: "Problem",
-                            }
-                            color_map = {
-                                0: "blue",
-                                1: "green",
-                                2: "red"
-                            }
-                            st.badge(badge_map[bad], color_map[bad])
+                    if bad:    
+                        badge_map = {
+                            0: "Help",
+                            1: "Suggestion",
+                            2: "Problem",
+                        }
+                        color_map = {
+                            0: "blue",
+                            1: "green",
+                            2: "red"
+                        }
+                        st.badge(badge_map[bad], color_map[bad])
         else:
             st.info("No posts yet — be the first to post!")
 
