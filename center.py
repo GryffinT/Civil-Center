@@ -178,7 +178,7 @@ def center_page(center_id):
                         2: "Problem",
                     }
                     color_map = {
-                        0: ["#89CFF0", "#B6D0E2"],
+                        0: ["#B6D0E2", "#89CFF0"],
                         1: ["#32fa8f", "#016e3d"],
                         2: ["red", "#6e0101"]
                     }
