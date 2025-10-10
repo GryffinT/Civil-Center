@@ -184,6 +184,7 @@ def center_page(center_id):
                     }
                     st.html("""
                             <p style='background: color_map[0][0]; color: color_map[0][1];'>{badge_map[0]}</p>
+                            <p style='background: color_map[1][0]; color: color_map[1][1];'>{badge_map[0]}</p>
                             """)
                     
                     if bad:
