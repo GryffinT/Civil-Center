@@ -188,7 +188,17 @@ def center_page(center_id):
                     """)
                     with col1:
                         if bad:    
-                            st.badge(bad)
+                            badge_map = {
+                                0: "Help",
+                                1: "Suggestion",
+                                2: "Problem",
+                            }
+                            color_map = {
+                                0: "blue",
+                                1: "green",
+                                2: "red"
+                            }
+                            st.badge(badge_map[bad], color_map[bad])
         else:
             st.info("No posts yet — be the first to post!")
 
@@ -265,10 +275,6 @@ def center_page(center_id):
                     options=option_map.keys(),
                     format_func=lambda option: option_map[option],
                     selection_mode="single",
-                )
-                st.write(
-                    "Your selected option: "
-                    f"{None if selection is None else option_map[selection]}"
                 )
                 if st.button("Post"):
                     # Build the post dictionary
