@@ -28,8 +28,8 @@ def center_page(center_id):
         z-index: 9999;
     
         background: rgba(220, 219, 218, 0.5);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     
