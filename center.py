@@ -172,32 +172,47 @@ def center_page(center_id):
 
                 with posts_container:
                     col1, col2 = st.columns([9,1])
-                    st.html(f"""
-                        <div style="
-                            border: 1px solid #ccc;
-                            border-radius: 10px;
-                            padding: 1em;
-                            margin: 1em 0;
-                            background-color: #fafafa;
-                            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-                        ">
-                            <h2 style="margin-bottom: 0.5em;">{title}</h2>
-                            <h4 style="color: #666; margin-top: 0;">Posted by {name}</h4>
-                            <p style="overflow-wrap: break-word; white-space: pre-wrap;">{content}</p>
-                        </div>
-                    """)
-                    if bad:    
-                        badge_map = {
-                            0: "Help",
-                            1: "Suggestion",
-                            2: "Problem",
-                        }
-                        color_map = {
-                            0: "blue",
-                            1: "green",
-                            2: "red"
-                        }
-                        st.badge(badge_map[bad], color=f"{color_map[bad]}")
+                    badge_map = {
+                        0: "Help",
+                        1: "Suggestion",
+                        2: "Problem",
+                    }
+                    color_map = {
+                        0: "blue",
+                        1: "green",
+                        2: "red"
+                    }
+                    if bad:
+                        st.html(f"""
+                            <div style="
+                                border: 1px solid #ccc;
+                                border-radius: 10px;
+                                padding: 1em;
+                                margin: 1em 0;
+                                background-color: #fafafa;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                            ">
+                                <h2 style="margin-bottom: 0.5em;">{title}</h2>
+                                <h4 style="color: #666; margin-top: 0;">Posted by {name}</h4>
+                                <p style="overflow-wrap: break-word; white-space: pre-wrap;">{content}</p>
+                                :{color_map[bad]}-badge[{badge_map[bad]}]
+                            </div>
+                        """)
+                    else:
+                        st.html(f"""
+                            <div style="
+                                border: 1px solid #ccc;
+                                border-radius: 10px;
+                                padding: 1em;
+                                margin: 1em 0;
+                                background-color: #fafafa;
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                            ">
+                                <h2 style="margin-bottom: 0.5em;">{title}</h2>
+                                <h4 style="color: #666; margin-top: 0;">Posted by {name}</h4>
+                                <p style="overflow-wrap: break-word; white-space: pre-wrap;">{content}</p>
+                            </div>
+                        """)
         else:
             st.info("No posts yet — be the first to post!")
 
