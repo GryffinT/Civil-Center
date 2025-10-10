@@ -181,6 +181,7 @@ def center_page(center_id):
                         0: ["#89CFF0", "#B6D0E2"],
                         1: ["#32fa8f", "#016e3d"],
                         2: ["red", "#6e0101"]
+                    }
                     st.html("""
                             <p style='background: color_map[0][0]; color: color_map[0][1];'>{badge_map[0]}</p>
                             """)
