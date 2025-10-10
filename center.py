@@ -197,7 +197,7 @@ def center_page(center_id):
                             1: "green",
                             2: "red"
                         }
-                        st.badge(badge_map[bad], color_map[bad])
+                        st.badge(badge_map[bad], color=f"{color_map[bad]}")
         else:
             st.info("No posts yet — be the first to post!")
 
