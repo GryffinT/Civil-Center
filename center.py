@@ -168,7 +168,7 @@ def center_page(center_id):
                 title = post.get("title", "Untitled")
                 name = post.get("name", "Unknown")
                 content = post.get("content", "")
-                bad = post.get("tag", "")
+                bad = post.get("tags", "")
 
                 with posts_container:
                     col1, col2 = st.columns([9,1])
