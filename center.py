@@ -182,22 +182,17 @@ def center_page(center_id):
                         1: ["#32fa8f", "#016e3d"],
                         2: ["red", "#6e0101"]
                     }
-                    
-                    st.html(f"""
-                        <p style='background: {color_map[0][0]}; color: {color_map[0][1]};'>{badge_map[0]}</p>
-                        <p style='background: {color_map[1][0]}; color: {color_map[1][1]};'>{badge_map[1]}</p>
-                    """)
-                    
-                    if bad:
-                        st.html(f"""
+                    if bad in [0,1,2]:
+                        st.html(
+                            f"""
                             <div style="
                                 border: 1px solid #ccc;
                                 border-radius: 10px;
                                 padding: 1em;
                                 margin: 1em 0;
                                 background-color: #fafafa;
-                                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-                            ">
+                                box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                
                                 <h2 style="margin-bottom: 0.5em;">{title}</h2>
                                 <h4 style="color: #666; margin-top: 0;">Posted by {name}</h4>
                                 <p style="overflow-wrap: break-word; white-space: pre-wrap;">{content}</p>
@@ -205,7 +200,7 @@ def center_page(center_id):
                                     {badge_map[bad]}
                                 </span>
                             </div>
-                        """)
+                            """)
                     else:
                         st.html(f"""
                             <div style="
