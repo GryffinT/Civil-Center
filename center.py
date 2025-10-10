@@ -111,13 +111,13 @@ def center_page(center_id):
         with col2:
             st.html(f"""
                     <div text-align: left;>
-                        <h1 style="margin-bottom: -5px;margin-top: 10px; font-size: 42;">{center.get('name', 'Unnamed Center')}</h1>
-                        <p style="overflow-wrap: break-word; font-size: 32;"><em>{center.get('description', f'The center for {center.get('name')}')}</em></p>
+                        <h1 style="margin-bottom: -5px;margin-top: 10px; font-size: 60;">{center.get('name', 'Unnamed Center')}</h1>
+                        <p style="overflow-wrap: break-word; font-size: 50;"><em>{center.get('description', f'The center for {center.get('name')}')}</em></p>
                     </div>
             """)
         with col3:
             st.html(f"""
-                <div style="text-align:center; margin-top: 15px;">
+                <div style="text-align:center; margin-top: 0 auto;">
                     <img src="https://i.postimg.cc/5yWZnMzD/members.gif" style="height:60px; width:60px;" />
                     <p style="font-size": 32;>{center.get('members')} members</p>
                 </div>
