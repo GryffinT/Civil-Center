@@ -205,6 +205,7 @@ def center_page(center_id):
             # Buttons for leave and post
             leave = st.button("Leave Center", use_container_width=True)
             post_btn = st.button("Make Post", use_container_width=True)
+            tags = ["Suggestion", "Bug", "Addition", "Help", "To do"]
 
             # Handle leaving
             if leave:
@@ -251,6 +252,9 @@ def center_page(center_id):
                 ptitle = st.text_input("Title")
                 pname = "Anonymous" if st.toggle("Post anonymously") else st.session_state.username
                 pcont = st.text_area("Content")
+                options = tags
+                if tags.len() >= 1:
+                    selection = st.pills("Directions", options, selection_mode="multi")
 
                 if st.button("Post"):
                     # Build the post dictionary
