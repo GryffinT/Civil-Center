@@ -170,6 +170,7 @@ def center_page(center_id):
                 content = post.get("content", "")
 
                 with posts_container:
+                    col1, col2 = st.columns([9,1])
                     st.html(f"""
                         <div style="
                             border: 1px solid #ccc;
