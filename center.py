@@ -182,10 +182,11 @@ def center_page(center_id):
                         1: ["#32fa8f", "#016e3d"],
                         2: ["red", "#6e0101"]
                     }
-                    st.html("""
-                            <p style='background: color_map[0][0]; color: color_map[0][1];'>{badge_map[0]}</p>
-                            <p style='background: color_map[1][0]; color: color_map[1][1];'>{badge_map[0]}</p>
-                            """)
+                    
+                    st.html(f"""
+                        <p style='background: {color_map[0][0]}; color: {color_map[0][1]};'>{badge_map[0]}</p>
+                        <p style='background: {color_map[1][0]}; color: {color_map[1][1]};'>{badge_map[1]}</p>
+                    """)
                     
                     if bad:
                         st.html(f"""
