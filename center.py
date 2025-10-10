@@ -195,7 +195,9 @@ def center_page(center_id):
                                 <h2 style="margin-bottom: 0.5em;">{title}</h2>
                                 <h4 style="color: #666; margin-top: 0;">Posted by {name}</h4>
                                 <p style="overflow-wrap: break-word; white-space: pre-wrap;">{content}</p>
-                                :{color_map[bad]}-badge[{badge_map[bad]}]
+                                <span style="display: inline-block; background: {color_map[bad]}; color: #fff; border-radius: 5px; padding: 0.2em 0.6em; font-size: 0.9em;">
+                                    {badge_map[bad]}
+                                </span>
                             </div>
                         """)
                     else:
