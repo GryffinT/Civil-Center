@@ -168,6 +168,7 @@ def center_page(center_id):
                 title = post.get("title", "Untitled")
                 name = post.get("name", "Unknown")
                 content = post.get("content", "")
+                bad = post.get("tag", "")
 
                 with posts_container:
                     col1, col2 = st.columns([9,1])
@@ -185,6 +186,9 @@ def center_page(center_id):
                             <p style="overflow-wrap: break-word; white-space: pre-wrap;">{content}</p>
                         </div>
                     """)
+                    with col1:
+                        if tag:    
+                            st.badge(bad)
         else:
             st.info("No posts yet — be the first to post!")
 
@@ -268,7 +272,7 @@ def center_page(center_id):
                 )
                 if st.button("Post"):
                     # Build the post dictionary
-                    post_data = {"title": ptitle, "name": pname, "content": pcont}
+                    post_data = {"title": ptitle, "name": pname, "content": pcont, "tags": selection}
 
                     # --- Fetch current posts from Supabase ---
                     center_posts_resp = supabase.table("centers").select("posts").eq("id", center_id).execute()
