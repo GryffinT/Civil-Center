@@ -187,7 +187,7 @@ def center_page(center_id):
                         </div>
                     """)
                     with col1:
-                        if tag:    
+                        if bad:    
                             st.badge(bad)
         else:
             st.info("No posts yet — be the first to post!")
