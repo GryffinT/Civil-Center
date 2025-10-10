@@ -75,7 +75,7 @@ def center_page(center_id):
     <div class="top-bar">
         <span style="padding-top: 60px;">Civil<sub>Center</sub></span>
     </div>
-    <div style="height: 150px;"></div>
+    <div style="height: 150px; margin-bottom:-10px;"></div>
     """, unsafe_allow_html=True)
     
     url = st.secrets["supabase"]["url"]
