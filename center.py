@@ -191,6 +191,7 @@ def center_page(center_id):
                 for entry in range(len(st.session_state.semantic_post_content)):
                     similarity = util.cos_sim(embed_text(content), embed_text(st.session_state.semantic_post_content[entry])).item()
                     st.write(f"{title} is {similarity} similar to {posts_list[entry].get(title)}")
+                    st.write(f"Index at entry {entry}")
                     
                 with posts_container:
                     col1, col2 = st.columns([9,1])
