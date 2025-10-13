@@ -190,7 +190,7 @@ def center_page(center_id):
                     similarity = util.cos_sim(embed_text(content), embed_text(st.session_state.semantic_post_content[entry])).item()
                     best_relation.update({similarity: st.session_state.semantic_post_content[entry]})
                 best_score = max(best_relation.keys())
-                st.write(f"The best relation for the post: '{title}' is {best_score}")
+                st.write(f"The best relation for the post: '{title}' is {best_relation[best_score]} with a similarity of {best_score}")
                 
                 with posts_container:
                     col1, col2 = st.columns([9,1])
