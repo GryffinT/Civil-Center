@@ -175,19 +175,20 @@ def center_page(center_id):
         if posts_list:
             if "semantic_post_content" not in st.session_state:
                 st.session_state.semantic_post_content = []
+            for post in reversed(post_list):
+                list_title = post.get("title", "Untitled")
+                list_content = post.get("content", "")
+                st.session_state.semantic_post_content.update({post: [list_title, list_content]})
+
             for post in reversed(posts_list):  # show newest first
                 title = post.get("title", "Untitled")
                 name = post.get("name", "Unknown")
                 content = post.get("content", "")
-                for entries in post_list:
-                    st.write(entries)
-                    similarity = util.cos_sim(embed_text(content), embed_text(post_list[entries])).item()
-                    if similarity > .5:
-                        st.write(f"They're similar at {similarity}!")
-                    else:
-                        st.write(f"Not similar at {similarity}!")
-                    
+                            
                 bad = post.get("tags", "")
+                for entry in st.session_state.semantic_post_content:
+                    similarity = util.cos_sim(text_embed(content), text_embed(st.session_state.semantic_post_content[entry][1])).item()
+                    st.write(similarity)
 
                 with posts_container:
                     col1, col2 = st.columns([9,1])
