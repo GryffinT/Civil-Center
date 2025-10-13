@@ -177,11 +177,8 @@ def center_page(center_id):
                 list_content = post.get("content", "")
                 if post not in st.session_state.semantic_post_content:
                     st.session_state.semantic_post_content.append(list_content)
-                    st.write(f"adding {post} to the list!")
-                    st.write(st.session_state.semantic_post_content)
-                    st.write("=====================================")
                 else:
-                    write(f"{post} is already in the list!")
+                    st.write(f"{post} is already in the list!")
                     
             best_relation = {}
             for post in reversed(posts_list):  # show newest first
@@ -191,8 +188,6 @@ def center_page(center_id):
                 bad = post.get("tags", "")
                 for entry in range(len(st.session_state.semantic_post_content)):
                     similarity = util.cos_sim(embed_text(content), embed_text(st.session_state.semantic_post_content[entry])).item()
-                    st.write(f"{title} is {similarity} similar to {posts_list[entry].get("title")}")
-                    st.write(f"Index at entry {entry}")
                     best_relation.update({st.session_state.semantic_post_content[entry]: similarity})
                 st.write(best_relation)
                     
