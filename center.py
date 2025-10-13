@@ -182,7 +182,8 @@ def center_page(center_id):
                     st.write("=====================================")
                 else:
                     write(f"{post} is already in the list!")
-
+                    
+            best_relation = {}
             for post in reversed(posts_list):  # show newest first
                 title = post.get("title", "Untitled")
                 name = post.get("name", "Unknown")
@@ -192,6 +193,8 @@ def center_page(center_id):
                     similarity = util.cos_sim(embed_text(content), embed_text(st.session_state.semantic_post_content[entry])).item()
                     st.write(f"{title} is {similarity} similar to {posts_list[entry].get(title)}")
                     st.write(f"Index at entry {entry}")
+                    best_relation.update({st.session_state.semantic_post_content[entry]: similarity})
+                st.write(best_relation)
                     
                 with posts_container:
                     col1, col2 = st.columns([9,1])
