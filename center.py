@@ -9,7 +9,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 def center_page(center_id):
-    
+    encoder = SentenceTransformer('all-MiniLM-L6-v2')
     def embed_text(text):
         return encoder.encode(text, convert_to_tensor=True)
     # === Styles ===
