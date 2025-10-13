@@ -236,7 +236,11 @@ def center_page(center_id):
             # Buttons for leave and post
             leave = st.button("Leave Center", use_container_width=True)
             post_btn = st.button("Make Post", use_container_width=True)
+            back = st.button("Back", use_container_width=True)
 
+            if back:
+                st.session_state.page = 2
+            
             # Handle leaving
             if leave:
                 user_data = users_resp.data[0]
