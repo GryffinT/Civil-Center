@@ -16,6 +16,10 @@ if "semantic_post_content" not in st.session_state:
 
 page = ""
 
+# --- embed function ---
+def embed_text(text):
+    return encoder.encode(text, convert_to_tensor=True)
+    
 # --- Function to reset scroll ---
 def scroll_to_top():
     components.html("""
