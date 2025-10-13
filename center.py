@@ -179,10 +179,13 @@ def center_page(center_id):
                 if post not in st.session_state.semantic_post_content:
                     st.session_state.semantic_post_content.append(list_content)
                     st.write(f"adding {post} to the list!")
+                    st.write(st.session_state.semantic_post_content)
+                    st.write("=====================================")
                 else:
                     write(f"{post} is already in the list!")
 
             for post in reversed(posts_list):  # show newest first
+                
                 title = post.get("title", "Untitled")
                 name = post.get("name", "Unknown")
                 content = post.get("content", "")
