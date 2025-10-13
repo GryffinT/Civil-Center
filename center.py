@@ -240,6 +240,7 @@ def center_page(center_id):
 
             if back:
                 st.session_state.page = 2
+                st.rerun()
             
             # Handle leaving
             if leave:
