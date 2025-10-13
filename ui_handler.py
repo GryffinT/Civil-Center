@@ -5,6 +5,9 @@ from my_centers import my_centers_page
 from center import center_page
 from pathlib import Path
 import streamlit.components.v1 as components
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering
+from sentence_transformers import SentenceTransformer, util
+from sklearn.metrics.pairwise import cosine_similarity
 
 # --- Initialize session state ---
 if "page" not in st.session_state:
