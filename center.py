@@ -183,7 +183,7 @@ def center_page(center_id):
                 content = post.get("content", "")
                 bad = post.get("tags", "")
                 for entry in st.session_state.semantic_post_content:
-                    similarity = util.cos_sim(text_embed(content), text_embed(st.session_state.semantic_post_content[entry][1])).item()
+                    similarity = util.cos_sim(embed_text(content), embed_text(st.session_state.semantic_post_content[entry][1])).item()
                     st.write(similarity)
 
                 with posts_container:
