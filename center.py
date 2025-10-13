@@ -1,8 +1,17 @@
 import streamlit as st
 from supabase import create_client, Client
 import ast
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering
+from sentence_transformers import SentenceTransformer, util
+from sklearn.metrics.pairwise import cosine_similarity
+
+
+
 
 def center_page(center_id):
+    @st.cache_data(ttl=3600)
+    def embed_text(text):
+        return encoder.encode(text, convert_to_tensor=True)
     # === Styles ===
     st.markdown("""
     <style>
@@ -164,10 +173,23 @@ def center_page(center_id):
 
         # --- Display posts ---
         if posts_list:
+            if semantic_post_content not in st.session_state:
+                st.session_state.semantic_post_content = []
             for post in reversed(posts_list):  # show newest first
                 title = post.get("title", "Untitled")
                 name = post.get("name", "Unknown")
                 content = post.get("content", "")
+                st.session_state.semantic_post_content.append(embed(content))
+                for entries in st.session_state.semantic_post_content:
+                    st.header(embed(content).item())
+                    st.write(entries)
+                    st.write(embed(entries).item())
+                    similarity = util.cos_sim(embed(content), embed(entries)).item()
+                    if similarity > .5:
+                        st.write(f"They're similar at {similarity}!")
+                    else:
+                        st.write(f"Not similar at {similarity}!")
+                    
                 bad = post.get("tags", "")
 
                 with posts_container:
