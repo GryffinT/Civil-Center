@@ -3,3 +3,4 @@ supabase
 bcrypt
 streamlit_navigation_bar
 transformers
+sentence_transformers
