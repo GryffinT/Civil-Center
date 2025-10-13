@@ -9,7 +9,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 def center_page(center_id):
-    @st.cache_data(ttl=3600)
+    
     def embed_text(text):
         return encoder.encode(text, convert_to_tensor=True)
     # === Styles ===
