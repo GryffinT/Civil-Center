@@ -11,6 +11,8 @@ if "page" not in st.session_state:
     st.session_state.page = 0
 if "active_center" not in st.session_state:
     st.session_state.active_center = None
+if "semantic_post_content" not in st.session_state:
+    st.session_state.semantic_post_content = []
 
 page = ""
 
