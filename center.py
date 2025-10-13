@@ -173,10 +173,6 @@ def center_page(center_id):
             if "semantic_post_content" not in st.session_state:
                 st.session_state.semantic_post_content = []
             for post in reversed(posts_list):
-                st.write(posts_list)
-                st.write("THIS IS IN")
-                st.write(st.session_state.semantic_post_content)
-                st.write("=====================================")
                 list_title = post.get("title", "Untitled")
                 list_content = post.get("content", "")
                 if post not in st.session_state.semantic_post_content:
@@ -188,18 +184,15 @@ def center_page(center_id):
                     write(f"{post} is already in the list!")
 
             for post in reversed(posts_list):  # show newest first
-                
                 title = post.get("title", "Untitled")
                 name = post.get("name", "Unknown")
                 content = post.get("content", "")
                 bad = post.get("tags", "")
-                st.write(len(st.session_state.semantic_post_content))
-                st.write(st.session_state.semantic_post_content)
                 for entry in range(len(st.session_state.semantic_post_content)):
                     similarity = util.cos_sim(embed_text(content), embed_text(st.session_state.semantic_post_content[entry])).item()
                     st.write(similarity)
                     
-
+            st.write(st.session_state.semantic_post_content)
                 with posts_container:
                     col1, col2 = st.columns([9,1])
                     badge_map = {
