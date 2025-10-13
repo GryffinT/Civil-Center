@@ -191,7 +191,7 @@ def center_page(center_id):
                 bad = post.get("tags", "")
                 for entry in range(len(st.session_state.semantic_post_content)):
                     similarity = util.cos_sim(embed_text(content), embed_text(st.session_state.semantic_post_content[entry])).item()
-                    st.write(f"{title} is {similarity} similar to {posts_list[entry].get(title)}")
+                    st.write(f"{title} is {similarity} similar to {posts_list[entry].get("title")}")
                     st.write(f"Index at entry {entry}")
                     best_relation.update({st.session_state.semantic_post_content[entry]: similarity})
                 st.write(best_relation)
