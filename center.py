@@ -175,7 +175,10 @@ def center_page(center_id):
             for post in reversed(posts_list):
                 list_title = post.get("title", "Untitled")
                 list_content = post.get("content", "")
-                st.session_state.semantic_post_content.append(list_content)
+                if post not in st.session_state.semantic_post_content:
+                    st.session_state.semantic_post_content.append(list_content)
+                else:
+                    write(f"{post} is already in the list!")
 
             for post in reversed(posts_list):  # show newest first
                 title = post.get("title", "Untitled")
