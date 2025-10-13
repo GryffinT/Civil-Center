@@ -177,6 +177,7 @@ def center_page(center_id):
                 list_content = post.get("content", "")
                 if post not in st.session_state.semantic_post_content:
                     st.session_state.semantic_post_content.append(list_content)
+                    st.write(f"adding {post} to the list!)"
                 else:
                     write(f"{post} is already in the list!")
 
