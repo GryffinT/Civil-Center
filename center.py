@@ -5,9 +5,6 @@ from transformers import AutoTokenizer, AutoModelForQuestionAnswering
 from sentence_transformers import SentenceTransformer, util
 from sklearn.metrics.pairwise import cosine_similarity
 
-
-
-
 def center_page(center_id):
     encoder = SentenceTransformer('all-MiniLM-L6-v2')
     def embed_text(text):
