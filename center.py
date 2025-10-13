@@ -268,7 +268,11 @@ def center_page(center_id):
                             supabase.table("centers").delete().eq("id", center_id_to_remove).execute()
                             st.info(f"The center '{center.get('name', center_id_to_remove)}' has been deleted (no remaining members).")
                         else:
-                            supabase.table("centers").update({"members": new_member_count}).eq("id", center_id_to_remove).execute()
+                            try:
+                                rpc_resp = supabase.rpc("decrement_members", {"center_id": center_id_to_remove}).execute()
+                            except Exception as rpc_err:
+                                st.write(f"Couldn't increment center member count (RPC error): {rpc_err}")
+                            #supabase.table("centers").update({"members": new_member_count}).eq("id", center_id_to_remove).execute()
 
                     st.success(f"You have left the center '{center.get('name', center_id_to_remove)}'.")
                     st.session_state.page = 2
