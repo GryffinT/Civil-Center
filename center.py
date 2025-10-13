@@ -190,9 +190,8 @@ def center_page(center_id):
                 bad = post.get("tags", "")
                 for entry in range(len(st.session_state.semantic_post_content)):
                     similarity = util.cos_sim(embed_text(content), embed_text(st.session_state.semantic_post_content[entry])).item()
-                    st.write(similarity)
+                    st.write(f"{title} is {similarity} similar to {posts_list[entry].get(title)}")
                     
-            st.write(st.session_state.semantic_post_content)
                 with posts_container:
                     col1, col2 = st.columns([9,1])
                     badge_map = {
