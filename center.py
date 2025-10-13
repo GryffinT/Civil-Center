@@ -179,12 +179,9 @@ def center_page(center_id):
                 title = post.get("title", "Untitled")
                 name = post.get("name", "Unknown")
                 content = post.get("content", "")
-                st.session_state.semantic_post_content.append(embed_text(content))
-                for entries in st.session_state.semantic_post_content:
-                    st.header(embed_text(content).item())
+                for entries in post_list:
                     st.write(entries)
-                    st.write(embed_text(entries).item())
-                    similarity = util.cos_sim(embed_text(content), embed_text(entries)).item()
+                    similarity = util.cos_sim(embed_text(content), embed_text(post_list[entries])).item()
                     if similarity > .5:
                         st.write(f"They're similar at {similarity}!")
                     else:
