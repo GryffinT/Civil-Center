@@ -173,6 +173,7 @@ def center_page(center_id):
             if "semantic_post_content" not in st.session_state:
                 st.session_state.semantic_post_content = []
             for post in reversed(posts_list):
+                st.write(post_list)
                 list_title = post.get("title", "Untitled")
                 list_content = post.get("content", "")
                 if post not in st.session_state.semantic_post_content:
