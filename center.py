@@ -197,7 +197,7 @@ def center_page(center_id):
                     parent.append({"title": best_relation[best_score], "children": title})
 
                 st.write(children)
-                st.write(parent)
+                st.write(parents)
                 st.write(f"The best relation for the post: '{title}' is {best_relation[best_score]} with a similarity of {best_score}")
                 
                 with posts_container:
