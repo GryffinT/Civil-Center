@@ -169,8 +169,6 @@ def center_page(center_id):
             posts_list = []
 
         # --- Display posts ---
-        children = []
-        parents = []
         if posts_list:
             if "semantic_post_content" not in st.session_state:
                 st.session_state.semantic_post_content = []
@@ -183,6 +181,8 @@ def center_page(center_id):
                     st.write(f"{post} is already in the list!")
                     
             best_relation = {}
+            parents = []
+            children = []
             for post in reversed(posts_list):  # show newest first
                 title = post.get("title", "Untitled")
                 name = post.get("name", "Unknown")
